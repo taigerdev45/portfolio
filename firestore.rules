@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Lecture publique pour tout le monde
+    match /{document=**} {
+      allow read: if true;
+    }
+    
+    // Écriture réservée à l'administrateur spécifique
+    match /projects/{project} {
+      allow write: if request.auth != null && request.auth.token.email == "taigermboumba@gmail.com";
+    }
+    
+    match /settings/{setting} {
+      allow write: if request.auth != null && request.auth.token.email == "taigermboumba@gmail.com";
+    }
+    
+    match /stats/{stat} {
+      allow write: if true; // Permettre l'incrémentation des stats par les visiteurs
+    }
+  }
+}

@@ -1,0 +1,107 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) return null;
+
+  const navLinks = [
+    { name: "Accueil", href: "/" },
+    { name: "Projets", href: "/projects" },
+    { name: "Contact", href: "/contact" },
+  ];
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50 rounded-2xl shadow-lg shadow-black/5">
+          <div className="flex justify-between h-16 md:h-20 px-4 md:px-8">
+            <div className="flex items-center">
+              <div className="group flex items-center space-x-2">
+                <Link href="/" className="flex items-center space-x-2">
+                  <div className="bg-indigo-600 text-white w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-xl font-black text-lg md:text-xl hover:rotate-6 transition-transform">
+                    TP
+                  </div>
+                  <span className="text-lg md:text-xl font-black tracking-tight text-gray-900 dark:text-white">
+                    PORTFOLIO
+                  </span>
+                </Link>
+                <Link 
+                  href="/admin" 
+                  className="text-[10px] font-bold text-gray-100 dark:text-gray-800 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors ml-1 mt-auto pb-1 select-none"
+                  title="Administration"
+                >
+                  •
+                </Link>
+              </div>
+            </div>
+            
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center space-x-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+                    pathname === link.href 
+                      ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400" 
+                      : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-all active:scale-90"
+                aria-label="Toggle menu"
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[-1] md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden absolute top-24 left-4 right-4 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl p-4 space-y-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={`flex items-center px-6 py-4 rounded-2xl text-base font-black transition-all ${
+                  pathname === link.href
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
+                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}
