@@ -109,6 +109,7 @@ export interface Settings {
   contactEmail: string;
   githubUrl: string;
   linkedinUrl: string;
+  brevoApiKey?: string;
 }
 
 export interface Feature {
@@ -132,6 +133,7 @@ export const getSettings = async (): Promise<Settings> => {
       contactEmail: data.contactEmail || "",
       githubUrl: data.githubUrl || "",
       linkedinUrl: data.linkedinUrl || "",
+      brevoApiKey: data.brevoApiKey || "",
     } as Settings;
   }
   return {

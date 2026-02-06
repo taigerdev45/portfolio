@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { getProjects, Project, trackPageView, trackClick } from "@/lib/services";
 import { ExternalLink, Code2, Search, X, Play, Globe, Info, Rocket, Server, Monitor, Github } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 
 export default function ProjectsPage() {
@@ -162,7 +161,7 @@ export default function ProjectsPage() {
       {selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8">
           <div className="absolute inset-0 bg-blue-950/60 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setSelectedProject(null)} />
-          <div className="bg-white dark:bg-slate-900 rounded-[2rem] md:rounded-[3rem] w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl relative animate-in zoom-in-95 duration-300 flex flex-col">
+          <div className="bg-white dark:bg-slate-900 rounded-4xl md:rounded-[3rem] w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl relative animate-in zoom-in-95 duration-300 flex flex-col">
             <div className="p-6 md:p-8 border-b border-blue-50 dark:border-slate-800 flex justify-between items-center bg-blue-50/30 dark:bg-blue-900/10 shrink-0">
               <div className="flex items-center space-x-4">
                 <div className="p-3 bg-blue-600 text-white rounded-2xl">

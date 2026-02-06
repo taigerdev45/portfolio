@@ -30,12 +30,7 @@ Un portfolio professionnel, dynamique et entièrement administrable, conçu pour
 - **Icônes** : [Lucide React](https://lucide.dev/)
 
 ## Installation et Développement
-
- **Cloner le projet** :
-   ```bash
-   git clone https://github.com/taigerdev45/portfolio.git
-   cd portfolio
-   ```
+  ```
 
  **Installer les dépendances** :
    ```bash

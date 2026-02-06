@@ -21,6 +21,7 @@ export default function AdminSettings() {
     contactEmail: "",
     githubUrl: "",
     linkedinUrl: "",
+    brevoApiKey: "",
   });
   const [features, setFeatures] = useState<Feature[]>([]);
   const [loading, setLoading] = useState(true);
@@ -201,6 +202,28 @@ export default function AdminSettings() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="space-y-4 md:space-y-6 border-t border-blue-100 dark:border-slate-800 pt-8">
+          <h3 className="text-lg md:text-xl font-black text-blue-950 dark:text-white flex items-center space-x-2">
+            <span className="w-1.5 md:w-2 h-6 md:h-8 bg-orange-600 rounded-full block"></span>
+            <span>Configuration Brevo (Envoi de Mail)</span>
+          </h3>
+          <div className="grid grid-cols-1 gap-6">
+            <div>
+              <label className="block text-[10px] md:text-sm font-black text-blue-900/70 dark:text-slate-400 mb-1.5 md:mb-2 uppercase tracking-wider">Clé API Brevo (v3)</label>
+              <input
+                type="password"
+                value={settings.brevoApiKey || ""}
+                onChange={(e) => setSettings({ ...settings, brevoApiKey: e.target.value })}
+                className="w-full px-5 md:px-6 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-300 font-bold text-base md:text-lg text-blue-950 dark:text-white"
+                placeholder="xkeysib-..."
+              />
+            </div>
+          </div>
+          <p className="text-[10px] md:text-xs text-blue-900/40 dark:text-slate-500 font-bold italic">
+            * Cette clé API est nécessaire pour envoyer les messages du formulaire de contact via Brevo.
+          </p>
         </div>
 
         <div className="space-y-4 md:space-y-6">

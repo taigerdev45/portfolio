@@ -1,12 +1,13 @@
 "use client";
 
-import { Mail, Github, Linkedin, Send } from "lucide-react";
+import { Mail, Github, Linkedin, Send, Phone } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getSettings, Settings } from "@/lib/services";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [settings, setSettings] = useState<Settings | null>(null);
@@ -23,13 +24,55 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus("sending");
     
-    // Simuler l'envoi (on pourrait utiliser EmailJS ou une API route Next.js)
-    setTimeout(() => {
+    try {
+      if (!settings?.brevoApiKey || !settings?.contactEmail) {
+        throw new Error("Configuration Brevo manquante dans les paramètres.");
+      }
+
+      const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+          "accept": "application/json",
+          "api-key": settings.brevoApiKey,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          sender: {
+            name: name,
+            email: email
+          },
+          to: [
+            {
+              email: settings.contactEmail,
+              name: "Admin Portfolio"
+            }
+          ],
+          subject: `Nouveau message de ${name} via Portfolio`,
+          htmlContent: `
+            <h3>Nouveau message reçu depuis votre portfolio</h3>
+            <p><strong>Nom:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Téléphone:</strong> ${phone || "Non renseigné"}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message}</p>
+          `
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Erreur lors de l'envoi via Brevo");
+      }
+
       setStatus("sent");
       setName("");
       setEmail("");
+      setPhone("");
       setMessage("");
-    }, 1500);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi du mail:", error);
+      setStatus("error");
+    }
   };
 
   return (
@@ -117,6 +160,19 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="space-y-2 md:space-y-3">
+                <label className="text-xs md:text-sm font-black text-blue-900/70 dark:text-slate-400 uppercase tracking-widest ml-1">Téléphone (Optionnel)</label>
+                <div className="relative">
+                  <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-blue-900/30 dark:text-slate-500" size={20} />
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full pl-14 pr-5 md:pr-6 py-4 md:py-5 bg-blue-50/50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-300 text-base md:text-lg font-bold text-blue-950 dark:text-white"
+                    placeholder="+xxx xxxxxxxx"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2 md:space-y-3">
                 <label className="text-xs md:text-sm font-black text-blue-900/70 dark:text-slate-400 uppercase tracking-widest ml-1">Message</label>
                 <textarea
                   required
@@ -141,6 +197,8 @@ export default function ContactPage() {
                   <div className="animate-spin rounded-full h-7 w-7 border-4 border-white/30 border-t-white" />
                 ) : status === "sent" ? (
                   <span>Message envoyé !</span>
+                ) : status === "error" ? (
+                  <span>Erreur lors de l&apos;envoi</span>
                 ) : (
                   <>
                     <span>Envoyer le message</span>
@@ -148,6 +206,11 @@ export default function ContactPage() {
                   </>
                 )}
               </button>
+              {status === "error" && (
+                <p className="text-center text-red-500 font-bold mt-4 animate-bounce">
+                  Veuillez vérifier la configuration Brevo dans l&apos;administration.
+                </p>
+              )}
             </form>
           </div>
         </div>
