@@ -31,34 +31,22 @@ Un portfolio professionnel, dynamique et entièrement administrable, conçu pour
 
 ## Installation et Développement
 
-1. **Cloner le projet** :
+ **Cloner le projet** :
    ```bash
    git clone https://github.com/taigerdev45/portfolio.git
    cd portfolio
    ```
 
-2. **Installer les dépendances** :
+ **Installer les dépendances** :
    ```bash
    npm install
    ```
-
-3. **Configuration Firebase** :
-   Créez un fichier `.env.local` à la racine et ajoutez vos clés API Firebase :
-   ```env
-   NEXT_PUBLIC_FIREBASE_API_KEY=votre_cle
-   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=votre_domaine
-   NEXT_PUBLIC_FIREBASE_PROJECT_ID=votre_id
-   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=votre_bucket
-   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=votre_sender_id
-   NEXT_PUBLIC_FIREBASE_APP_ID=votre_app_id
-   ```
-
-4. **Lancer en local** :
+ **Lancer en local** :
    ```bash
    npm run dev
    ```
 
-## 🚀 Déploiement
+## Déploiement
 
 Le projet est configuré pour être déployé sur **Firebase Hosting** :
 

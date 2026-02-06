@@ -48,17 +48,41 @@ export default function ContactPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
             {[
-              { icon: <Mail size={24} />, label: "Email", value: settings?.contactEmail || "votre@email.com", color: "blue" },
-              { icon: <Github size={24} />, label: "GitHub", value: settings?.githubUrl?.replace("https://github.com/", "") || "github.com/votre-username", color: "indigo" },
-              { icon: <Linkedin size={24} />, label: "LinkedIn", value: settings?.linkedinUrl?.replace("https://linkedin.com/in/", "") || "linkedin.com/in/votre-nom", color: "blue" }
+              { 
+                icon: <Mail size={24} />, 
+                label: "Email", 
+                value: settings?.contactEmail || "votre@email.com", 
+                href: settings?.contactEmail ? `mailto:${settings.contactEmail}` : "#",
+                color: "blue" 
+              },
+              { 
+                icon: <Github size={24} />, 
+                label: "GitHub", 
+                value: settings?.githubUrl?.replace("https://github.com/", "") || "github.com/votre-username", 
+                href: settings?.githubUrl || "#",
+                color: "indigo" 
+              },
+              { 
+                icon: <Linkedin size={24} />, 
+                label: "LinkedIn", 
+                value: settings?.linkedinUrl?.replace("https://linkedin.com/in/", "") || "linkedin.com/in/votre-nom", 
+                href: settings?.linkedinUrl || "#",
+                color: "blue" 
+              }
             ].map((item, i) => (
-              <div key={i} className="group p-6 md:p-8 bg-white/80 backdrop-blur-sm dark:bg-slate-900 border border-blue-100 dark:border-slate-800 rounded-3xl md:rounded-4xl hover:shadow-2xl hover:border-blue-300 transition-all duration-500">
+              <a 
+                key={i} 
+                href={item.href}
+                target={item.href.startsWith('http') ? "_blank" : undefined}
+                rel={item.href.startsWith('http') ? "noopener noreferrer" : undefined}
+                className="group p-6 md:p-8 bg-white/80 backdrop-blur-sm dark:bg-slate-900 border border-blue-100 dark:border-slate-800 rounded-3xl md:rounded-4xl hover:shadow-2xl hover:border-blue-300 transition-all duration-500 block"
+              >
                 <div className={`p-3 md:p-4 bg-${item.color}-50 dark:bg-${item.color}-900/20 text-${item.color}-600 dark:text-${item.color}-400 w-fit rounded-xl md:rounded-2xl mb-4 md:mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500`}>
                   {item.icon}
                 </div>
                 <p className="text-[10px] md:text-xs font-black text-blue-900/40 dark:text-slate-500 uppercase tracking-widest mb-1">{item.label}</p>
                 <p className="text-base md:text-lg font-black text-blue-950 dark:text-white truncate tracking-tight">{item.value}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>
