@@ -21,6 +21,10 @@ export default function AdminProjects() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [technologies, setTechnologies] = useState("");
+  const [completionLevel, setCompletionLevel] = useState(100);
+  const [status, setStatus] = useState<"online" | "local">("online");
   const [image, setImage] = useState("");
 
   const fetchProjects = useCallback(async () => {
@@ -94,7 +98,17 @@ export default function AdminProjects() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const projectData = { title, description, link, image };
+    const techArray = technologies.split(",").map(t => t.trim()).filter(t => t !== "");
+    const projectData = { 
+      title, 
+      description, 
+      link, 
+      videoUrl, 
+      image,
+      technologies: techArray,
+      completionLevel: Number(completionLevel),
+      status
+    };
 
     try {
       if (editingProject?.id) {
@@ -115,6 +129,10 @@ export default function AdminProjects() {
     setTitle(project.title);
     setDescription(project.description);
     setLink(project.link);
+    setVideoUrl(project.videoUrl || "");
+    setTechnologies(project.technologies?.join(", ") || "");
+    setCompletionLevel(project.completionLevel || 100);
+    setStatus(project.status || "online");
     setImage(project.image);
     setIsModalOpen(true);
   };
@@ -131,6 +149,10 @@ export default function AdminProjects() {
     setTitle("");
     setDescription("");
     setLink("");
+    setVideoUrl("");
+    setTechnologies("");
+    setCompletionLevel(100);
+    setStatus("online");
     setImage("");
   };
 
@@ -251,6 +273,48 @@ export default function AdminProjects() {
                     className="w-full px-4 md:px-5 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-200 dark:focus:border-blue-900 rounded-xl md:rounded-2xl outline-none transition-all font-bold text-base md:text-lg text-blue-950 dark:text-white placeholder:text-blue-900/20"
                     placeholder="https://..."
                   />
+                </div>
+                <div className="space-y-1.5 md:space-y-2">
+                  <label className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Lien Vidéo (Optionnel)</label>
+                  <input
+                    type="url"
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    className="w-full px-4 md:px-5 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-200 dark:focus:border-blue-900 rounded-xl md:rounded-2xl outline-none transition-all font-bold text-base md:text-lg text-blue-950 dark:text-white placeholder:text-blue-900/20"
+                    placeholder="https://youtube.com/..."
+                  />
+                </div>
+                <div className="space-y-1.5 md:space-y-2">
+                  <label className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Technologies (séparées par des virgules)</label>
+                  <input
+                    type="text"
+                    value={technologies}
+                    onChange={(e) => setTechnologies(e.target.value)}
+                    className="w-full px-4 md:px-5 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-200 dark:focus:border-blue-900 rounded-xl md:rounded-2xl outline-none transition-all font-bold text-base md:text-lg text-blue-950 dark:text-white placeholder:text-blue-900/20"
+                    placeholder="React, Next.js, Tailwind..."
+                  />
+                </div>
+                <div className="space-y-1.5 md:space-y-2">
+                  <label className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Niveau de réalisation ({completionLevel}%)</label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={completionLevel}
+                    onChange={(e) => setCompletionLevel(Number(e.target.value))}
+                    className="w-full h-2 bg-blue-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                  />
+                </div>
+                <div className="space-y-1.5 md:space-y-2">
+                  <label className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Statut du projet</label>
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value as "online" | "local")}
+                    className="w-full px-4 md:px-5 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-200 dark:focus:border-blue-900 rounded-xl md:rounded-2xl outline-none transition-all font-bold text-base md:text-lg text-blue-950 dark:text-white"
+                  >
+                    <option value="online">En ligne</option>
+                    <option value="local">Local</option>
+                  </select>
                 </div>
               </div>
               <div className="space-y-1.5 md:space-y-2">

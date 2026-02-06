@@ -21,6 +21,10 @@ export interface Project {
   description: string;
   link: string;
   image: string; // base64
+  videoUrl?: string; // URL de la vidéo (YouTube, Vimeo, etc.)
+  technologies?: string[]; // Technologies utilisées (ex: ["Next.js", "Tailwind"])
+  completionLevel: number; // Niveau de réalisation (0-100)
+  status: "online" | "local"; // Statut du projet
   clicks: number;
   createdAt?: unknown;
 }
