@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getSettings, getProjects, Project, Settings, trackVisit, getFeatures, Feature, trackClick } from "@/lib/services";
-import { ArrowRight, ExternalLink, Code2, Rocket, Layout, Sparkles, LucideIcon, X, Play, Globe, Info, Search, Server, Monitor } from "lucide-react";
+import { ArrowRight, ExternalLink, Code2, Rocket, Layout, Sparkles, LucideIcon, X, Play, Globe, Info, Search, Server, Monitor, Github } from "lucide-react";
 
 // Mapping des icônes Lucide
 const IconMap: Record<string, LucideIcon> = {
@@ -325,6 +325,25 @@ export default function Home() {
                           </a>
                         </td>
                       </tr>
+                      {selectedProject.githubUrl && (
+                        <tr>
+                          <td className="px-6 py-5 font-black text-blue-950 dark:text-white flex items-center space-x-3">
+                            <Github size={18} className="text-blue-600" />
+                            <span>Code source</span>
+                          </td>
+                          <td className="px-6 py-5">
+                            <a 
+                              href={selectedProject.githubUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline font-black inline-flex items-center space-x-2"
+                            >
+                              <span>Voir sur GitHub</span>
+                              <ExternalLink size={14} />
+                            </a>
+                          </td>
+                        </tr>
+                      )}
                       <tr>
                         <td className="px-6 py-5 font-black text-blue-950 dark:text-white flex items-center space-x-3">
                           {selectedProject.status === "online" ? (

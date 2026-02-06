@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getProjects, Project, trackPageView, trackClick } from "@/lib/services";
-import { ExternalLink, Code2, Search, X, Play, Globe, Info, Rocket, Server, Monitor } from "lucide-react";
+import { ExternalLink, Code2, Search, X, Play, Globe, Info, Rocket, Server, Monitor, Github } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -275,6 +275,25 @@ export default function ProjectsPage() {
                           </a>
                         </td>
                       </tr>
+                      {selectedProject.githubUrl && (
+                        <tr>
+                          <td className="px-6 py-5 font-black text-blue-950 dark:text-white flex items-center space-x-3">
+                            <Github size={18} className="text-blue-600" />
+                            <span>Code source</span>
+                          </td>
+                          <td className="px-6 py-5">
+                            <a 
+                              href={selectedProject.githubUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline font-black inline-flex items-center space-x-2"
+                            >
+                              <span>Voir sur GitHub</span>
+                              <ExternalLink size={14} />
+                            </a>
+                          </td>
+                        </tr>
+                      )}
                       <tr>
                         <td className="px-6 py-5 font-black text-blue-950 dark:text-white flex items-center space-x-3">
                           {selectedProject.status === "online" ? (

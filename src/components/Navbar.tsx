@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Monitor } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,19 +25,16 @@ export default function Navbar() {
             <div className="flex items-center">
               <div className="group flex items-center space-x-2">
                 <Link href="/" className="flex items-center space-x-2">
-                  <div className="bg-indigo-600 text-white w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-xl font-black text-lg md:text-xl hover:rotate-6 transition-transform">
-                    TP
-                  </div>
                   <span className="text-lg md:text-xl font-black tracking-tight text-gray-900 dark:text-white">
                     PORTFOLIO
                   </span>
                 </Link>
                 <Link 
-                  href="/admin" 
-                  className="text-[10px] font-bold text-gray-100 dark:text-gray-800 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors ml-1 mt-auto pb-1 select-none"
+                  href="/admin/login" 
+                  className="p-2 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all ml-1 hover:scale-110 active:scale-95"
                   title="Administration"
                 >
-                  •
+                  <Monitor size={18} />
                 </Link>
               </div>
             </div>

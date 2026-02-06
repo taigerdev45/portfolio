@@ -22,6 +22,7 @@ export default function AdminProjects() {
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [githubUrl, setGithubUrl] = useState("");
   const [technologies, setTechnologies] = useState("");
   const [completionLevel, setCompletionLevel] = useState(100);
   const [status, setStatus] = useState<"online" | "local">("online");
@@ -104,6 +105,7 @@ export default function AdminProjects() {
       description, 
       link, 
       videoUrl, 
+      githubUrl,
       image,
       technologies: techArray,
       completionLevel: Number(completionLevel),
@@ -130,6 +132,7 @@ export default function AdminProjects() {
     setDescription(project.description);
     setLink(project.link);
     setVideoUrl(project.videoUrl || "");
+    setGithubUrl(project.githubUrl || "");
     setTechnologies(project.technologies?.join(", ") || "");
     setCompletionLevel(project.completionLevel || 100);
     setStatus(project.status || "online");
@@ -150,6 +153,7 @@ export default function AdminProjects() {
     setDescription("");
     setLink("");
     setVideoUrl("");
+    setGithubUrl("");
     setTechnologies("");
     setCompletionLevel(100);
     setStatus("online");
@@ -282,6 +286,16 @@ export default function AdminProjects() {
                     onChange={(e) => setVideoUrl(e.target.value)}
                     className="w-full px-4 md:px-5 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-200 dark:focus:border-blue-900 rounded-xl md:rounded-2xl outline-none transition-all font-bold text-base md:text-lg text-blue-950 dark:text-white placeholder:text-blue-900/20"
                     placeholder="https://youtube.com/..."
+                  />
+                </div>
+                <div className="space-y-1.5 md:space-y-2">
+                  <label className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Lien GitHub (Optionnel)</label>
+                  <input
+                    type="url"
+                    value={githubUrl}
+                    onChange={(e) => setGithubUrl(e.target.value)}
+                    className="w-full px-4 md:px-5 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-200 dark:focus:border-blue-900 rounded-xl md:rounded-2xl outline-none transition-all font-bold text-base md:text-lg text-blue-950 dark:text-white placeholder:text-blue-900/20"
+                    placeholder="https://github.com/..."
                   />
                 </div>
                 <div className="space-y-1.5 md:space-y-2">
