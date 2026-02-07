@@ -220,7 +220,8 @@ export default function AdminSettings() {
                 placeholder="xkeysib-..."
               />
               <p className="mt-2 text-[10px] md:text-xs text-blue-900/40 dark:text-slate-500 font-bold italic">
-                * Utilisez la clé <strong>API v3</strong> de Brevo. Assurez-vous que l&apos;adresse email de contact ci-dessus est bien un <strong>expéditeur vérifié</strong> dans votre compte Brevo.
+                Format requis : <code className="bg-blue-100/50 dark:bg-slate-700 px-1 rounded not-italic font-mono">xkeysib-...</code>. 
+                Assurez-vous que l&apos;expéditeur (votre email de contact) est bien un <strong>expéditeur vérifié</strong> dans votre compte Brevo.
               </p>
             </div>
           </div>

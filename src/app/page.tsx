@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { getSettings, getProjects, Project, Settings, trackVisit, getFeatures, Feature, trackClick, getSkills, Skill } from "@/lib/services";
-import { ArrowRight, ExternalLink, Code2, Rocket, Layout, Sparkles, LucideIcon, X, Play, Globe, Info, Search, Server, Monitor, Github, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ExternalLink, Code2, Rocket, Layout, Sparkles, LucideIcon, X, Play, Globe, Info, Search, Server, Monitor, Github } from "lucide-react";
 
 // Mapping des icônes Lucide
 const IconMap: Record<string, LucideIcon> = {
@@ -21,8 +21,6 @@ export default function Home() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
-  const skillIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,39 +39,6 @@ export default function Home() {
     };
     fetchData();
   }, []);
-
-  // Gestion du défilement automatique des compétences (6s)
-  useEffect(() => {
-    if (skills.length > 0) {
-      startSkillInterval();
-    }
-    return () => stopSkillInterval();
-  }, [skills.length]);
-
-  const startSkillInterval = () => {
-    stopSkillInterval();
-    skillIntervalRef.current = setInterval(() => {
-      setCurrentSkillIndex((prev) => (prev + 1) % skills.length);
-    }, 6000);
-  };
-
-  const stopSkillInterval = () => {
-    if (skillIntervalRef.current) {
-      clearInterval(skillIntervalRef.current);
-    }
-  };
-
-  const nextSkill = () => {
-    stopSkillInterval();
-    setCurrentSkillIndex((prev) => (prev + 1) % skills.length);
-    startSkillInterval();
-  };
-
-  const prevSkill = () => {
-    stopSkillInterval();
-    setCurrentSkillIndex((prev) => (prev - 1 + skills.length) % skills.length);
-    startSkillInterval();
-  };
 
   const handleProjectClick = async (project: Project) => {
     setSelectedProject(project);
@@ -179,69 +144,59 @@ export default function Home() {
 
       {/* Skills Carousel Section */}
       {skills.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative overflow-hidden">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl md:text-5xl font-black text-blue-950 dark:text-white uppercase tracking-tight">Technologies & Outils</h2>
-            <div className="h-1.5 w-24 bg-blue-600 rounded-full mx-auto" />
+        <section className="py-20 relative overflow-hidden bg-blue-50/30 dark:bg-slate-900/50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+            <div className="flex items-center space-x-4">
+              <h2 className="text-2xl md:text-4xl font-black text-blue-950 dark:text-white uppercase tracking-tight">Technologies & Outils</h2>
+              <div className="h-1 w-24 bg-blue-600 rounded-full" />
+            </div>
           </div>
 
-          <div className="relative group">
-            {/* Desktop Navigation Buttons */}
-            <div className="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-8 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button 
-                onClick={prevSkill}
-                className="p-4 bg-white dark:bg-slate-900 border border-blue-100 dark:border-slate-800 rounded-2xl shadow-xl text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300"
-              >
-                <ChevronLeft size={24} />
-              </button>
-            </div>
-            <div className="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-8 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button 
-                onClick={nextSkill}
-                className="p-4 bg-white dark:bg-slate-900 border border-blue-100 dark:border-slate-800 rounded-2xl shadow-xl text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300"
-              >
-                <ChevronRight size={24} />
-              </button>
+          <div className="relative flex overflow-hidden group">
+            <div className="animate-marquee flex items-center py-4">
+              {/* Premier set d'icônes */}
+              {skills.map((skill, idx) => (
+                <div 
+                  key={`skill-1-${skill.id || idx}`}
+                  className="mx-4 md:mx-8 flex flex-col items-center space-y-4 group/item"
+                >
+                  <div className="relative w-20 h-20 md:w-32 md:h-32 bg-white dark:bg-slate-900 rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl shadow-blue-500/5 border border-blue-50 dark:border-slate-800 flex items-center justify-center transform group-hover/item:scale-110 group-hover/item:-translate-y-2 transition-all duration-500">
+                    <Image 
+                      src={skill.icon} 
+                      alt={skill.name}
+                      fill
+                      className="object-contain p-4 md:p-6"
+                    />
+                  </div>
+                  <span className="text-sm md:text-lg font-bold text-blue-900/60 dark:text-slate-400 uppercase tracking-widest opacity-0 group-hover/item:opacity-100 transition-opacity duration-300">
+                    {skill.name}
+                  </span>
+                </div>
+              ))}
+              {/* Deuxième set d'icônes pour l'effet infini */}
+              {skills.map((skill, idx) => (
+                <div 
+                  key={`skill-2-${skill.id || idx}`}
+                  className="mx-4 md:mx-8 flex flex-col items-center space-y-4 group/item"
+                >
+                  <div className="relative w-20 h-20 md:w-32 md:h-32 bg-white dark:bg-slate-900 rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl shadow-blue-500/5 border border-blue-50 dark:border-slate-800 flex items-center justify-center transform group-hover/item:scale-110 group-hover/item:-translate-y-2 transition-all duration-500">
+                    <Image 
+                      src={skill.icon} 
+                      alt={skill.name}
+                      fill
+                      className="object-contain p-4 md:p-6"
+                    />
+                  </div>
+                  <span className="text-sm md:text-lg font-bold text-blue-900/60 dark:text-slate-400 uppercase tracking-widest opacity-0 group-hover/item:opacity-100 transition-opacity duration-300">
+                    {skill.name}
+                  </span>
+                </div>
+              ))}
             </div>
 
-            {/* Carousel Content */}
-            <div className="flex justify-center items-center px-4">
-              <div className="relative w-full max-w-4xl overflow-hidden py-10">
-                <div 
-                  className="flex transition-transform duration-1000 ease-in-out"
-                  style={{ transform: `translateX(-${currentSkillIndex * 100}%)` }}
-                >
-                  {skills.map((skill, idx) => (
-                    <div 
-                      key={skill.id || idx} 
-                      className="min-w-full flex flex-col items-center justify-center space-y-8 animate-in fade-in zoom-in-95 duration-1000"
-                    >
-                      <div className="relative w-32 h-32 md:w-48 md:h-48 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl shadow-blue-500/10 border border-blue-50 dark:border-slate-800 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-700">
-                        <Image 
-                          src={skill.icon} 
-                          alt={skill.name}
-                          fill
-                          className="object-contain p-8 md:p-12"
-                        />
-                      </div>
-                      <div className="text-center space-y-2">
-                        <h3 className="text-3xl md:text-5xl font-black text-blue-950 dark:text-white uppercase tracking-tighter">
-                          {skill.name}
-                        </h3>
-                        <div className="flex justify-center space-x-1">
-                          {skills.map((_, i) => (
-                            <div 
-                              key={i} 
-                              className={`h-1.5 rounded-full transition-all duration-500 ${i === currentSkillIndex ? "w-8 bg-blue-600" : "w-2 bg-blue-200 dark:bg-slate-800"}`} 
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            {/* Dégradés pour l'effet de fondu sur les côtés */}
+            <div className="absolute inset-y-0 left-0 w-20 md:w-40 bg-gradient-to-r from-blue-50/30 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-20 md:w-40 bg-gradient-to-l from-blue-50/30 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
           </div>
         </section>
       )}
