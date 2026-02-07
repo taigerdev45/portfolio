@@ -19,7 +19,12 @@ export const metadata: Metadata = {
   title: "Mon Portfolio",
   description: "Portfolio de mes projets et compétences",
   icons: {
-    icon: "/logoportfolio.png",
+    icon: [
+      { url: "/logoportfolio.png" },
+      { url: "/logoportfolio.png", sizes: "32x32", type: "image/png" },
+    ],
+    shortcut: "/logoportfolio.png",
+    apple: "/logoportfolio.png",
   },
 };
 
