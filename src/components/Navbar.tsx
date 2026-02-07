@@ -26,7 +26,7 @@ export default function Navbar() {
           <div className="flex justify-between h-16 md:h-20 px-4 md:px-8">
             <div className="flex items-center">
               <div className="group flex items-center space-x-3">
-                <Link href="/" className="flex items-center space-x-2">
+                <Link href="/" prefetch={false} className="flex items-center space-x-2">
                   <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-xl">
                     <Image 
                       src="/logoportfolio.png"

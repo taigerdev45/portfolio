@@ -20,8 +20,10 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const fetchData = async () => {
       try {
         const [s, p] = await Promise.all([getStats(), getProjects()]);
@@ -98,38 +100,40 @@ export default function AdminDashboard() {
               <BarChart3 size={20} className="text-blue-600 dark:text-blue-300" />
             </div>
           </div>
-          <div className="h-64 md:h-80 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={projectClickData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#dbeafe" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#1e3a8a', fontWeight: 900, fontSize: 10 }}
-                  dy={10}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#1e3a8a', fontWeight: 900, fontSize: 10 }}
-                />
-                <Tooltip 
-                  cursor={{ fill: '#eff6ff' }}
-                  contentStyle={{ 
-                    borderRadius: '20px', 
-                    border: '1px solid #dbeafe', 
-                    boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)',
-                    padding: '12px 16px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                    color: '#1e3a8a',
-                    fontWeight: '900',
-                    fontSize: '12px'
-                  }}
-                />
-                <Bar dataKey="clicks" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={24} />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="h-64 md:h-80 w-full min-w-0">
+            {mounted && (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={projectClickData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#dbeafe" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#1e3a8a', fontWeight: 900, fontSize: 10 }}
+                    dy={10}
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#1e3a8a', fontWeight: 900, fontSize: 10 }}
+                  />
+                  <Tooltip 
+                    cursor={{ fill: '#eff6ff' }}
+                    contentStyle={{ 
+                      borderRadius: '20px', 
+                      border: '1px solid #dbeafe', 
+                      boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)',
+                      padding: '12px 16px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      color: '#1e3a8a',
+                      fontWeight: '900',
+                      fontSize: '12px'
+                    }}
+                  />
+                  <Bar dataKey="clicks" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={24} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
 
@@ -141,36 +145,38 @@ export default function AdminDashboard() {
               <PieIcon size={20} className="text-blue-600 dark:text-blue-300" />
             </div>
           </div>
-          <div className="h-64 md:h-80 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={projectClickData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={85}
-                  paddingAngle={8}
-                  dataKey="clicks"
-                >
-                  {projectClickData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  contentStyle={{ 
-                    borderRadius: '20px', 
-                    border: '1px solid #dbeafe', 
-                    boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)',
-                    padding: '12px 16px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                    color: '#1e3a8a',
-                    fontWeight: '900',
-                    fontSize: '12px'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="h-64 md:h-80 w-full min-w-0">
+            {mounted && (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={projectClickData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={85}
+                    paddingAngle={8}
+                    dataKey="clicks"
+                  >
+                    {projectClickData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ 
+                      borderRadius: '20px', 
+                      border: '1px solid #dbeafe', 
+                      boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)',
+                      padding: '12px 16px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      color: '#1e3a8a',
+                      fontWeight: '900',
+                      fontSize: '12px'
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-3 md:gap-4 mt-4 md:mt-6">
             {projectClickData.map((entry, index) => (

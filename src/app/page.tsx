@@ -152,7 +152,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative flex overflow-hidden group">
+          <div className="relative flex overflow-hidden group py-10">
             <div className="animate-marquee flex items-center py-4">
               {/* Premier set d'icônes */}
               {skills.map((skill, idx) => (
@@ -160,12 +160,12 @@ export default function Home() {
                   key={`skill-1-${skill.id || idx}`}
                   className="mx-4 md:mx-8 flex flex-col items-center space-y-4 group/item"
                 >
-                  <div className="relative w-20 h-20 md:w-32 md:h-32 bg-white dark:bg-slate-900 rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl shadow-blue-500/5 border border-blue-50 dark:border-slate-800 flex items-center justify-center transform group-hover/item:scale-110 group-hover/item:-translate-y-2 transition-all duration-500">
+                  <div className="relative w-20 h-20 md:w-32 md:h-32 flex items-center justify-center transform group-hover/item:scale-110 group-hover/item:-translate-y-2 transition-all duration-500">
                     <Image 
                       src={skill.icon} 
                       alt={skill.name}
                       fill
-                      className="object-contain p-4 md:p-6"
+                      className="object-contain"
                     />
                   </div>
                   <span className="text-sm md:text-lg font-bold text-blue-900/60 dark:text-slate-400 uppercase tracking-widest opacity-0 group-hover/item:opacity-100 transition-opacity duration-300">
@@ -179,12 +179,12 @@ export default function Home() {
                   key={`skill-2-${skill.id || idx}`}
                   className="mx-4 md:mx-8 flex flex-col items-center space-y-4 group/item"
                 >
-                  <div className="relative w-20 h-20 md:w-32 md:h-32 bg-white dark:bg-slate-900 rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl shadow-blue-500/5 border border-blue-50 dark:border-slate-800 flex items-center justify-center transform group-hover/item:scale-110 group-hover/item:-translate-y-2 transition-all duration-500">
+                  <div className="relative w-20 h-20 md:w-32 md:h-32 flex items-center justify-center transform group-hover/item:scale-110 group-hover/item:-translate-y-2 transition-all duration-500">
                     <Image 
                       src={skill.icon} 
                       alt={skill.name}
                       fill
-                      className="object-contain p-4 md:p-6"
+                      className="object-contain"
                     />
                   </div>
                   <span className="text-sm md:text-lg font-bold text-blue-900/60 dark:text-slate-400 uppercase tracking-widest opacity-0 group-hover/item:opacity-100 transition-opacity duration-300">

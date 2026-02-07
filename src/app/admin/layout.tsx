@@ -134,6 +134,7 @@ export default function AdminLayout({
             <Link
               key={item.href}
               href={item.href}
+              prefetch={false}
               onClick={() => setIsMobileMenuOpen(false)}
               className={`flex items-center space-x-3 p-4 rounded-xl font-bold transition-all duration-300 group ${
                 pathname === item.href
@@ -151,6 +152,7 @@ export default function AdminLayout({
           <div className="pt-6 mt-6 border-t border-blue-50 dark:border-slate-800">
             <Link
               href="/"
+              prefetch={false}
               className="flex items-center space-x-3 p-4 text-blue-900/60 dark:text-slate-400 hover:bg-blue-50/50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-white rounded-xl font-bold transition-all group"
             >
               <div className="transition-transform duration-300 group-hover:-translate-x-1">
