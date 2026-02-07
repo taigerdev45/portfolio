@@ -29,17 +29,25 @@ export default function ContactPage() {
         throw new Error("Configuration Brevo manquante dans les paramètres.");
       }
 
+      if (!settings.brevoApiKey.startsWith("xkeysib-")) {
+        throw new Error("La clé API Brevo semble invalide (elle doit commencer par 'xkeysib-').");
+      }
+
       const response = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
         headers: {
           "accept": "application/json",
-          "api-key": settings.brevoApiKey,
+          "api-key": settings.brevoApiKey.trim(),
           "content-type": "application/json"
         },
         body: JSON.stringify({
           sender: {
-            name: name,
-            email: email
+            name: "Formulaire Portfolio",
+            email: settings.contactEmail
+          },
+          replyTo: {
+            email: email,
+            name: name
           },
           to: [
             {
@@ -49,20 +57,37 @@ export default function ContactPage() {
           ],
           subject: `Nouveau message de ${name} via Portfolio`,
           htmlContent: `
-            <h3>Nouveau message reçu depuis votre portfolio</h3>
-            <p><strong>Nom:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Téléphone:</strong> ${phone || "Non renseigné"}</p>
-            <p><strong>Message:</strong></p>
-            <p>${message}</p>
+            <div style="font-family: sans-serif; line-height: 1.6; color: #1e293b; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+              <div style="background-color: #2563eb; color: white; padding: 20px; text-align: center;">
+                <h2 style="margin: 0;">Nouveau Message</h2>
+              </div>
+              <div style="padding: 30px;">
+                <p>Vous avez reçu un nouveau message depuis votre formulaire de contact.</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
+                <p><strong>Nom :</strong> ${name}</p>
+                <p><strong>Email :</strong> ${email}</p>
+                <p><strong>Téléphone :</strong> ${phone || "Non renseigné"}</p>
+                <p><strong>Message :</strong></p>
+                <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                  ${message.replace(/\n/g, '<br>')}
+                </div>
+              </div>
+              <div style="background-color: #f1f5f9; padding: 15px; text-align: center; font-size: 12px; color: #64748b;">
+                Ceci est un message automatique envoyé depuis votre portfolio.
+              </div>
+            </div>
           `
         })
       });
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.error("Détails de l'erreur Brevo:", errorData);
         throw new Error(errorData.message || "Erreur lors de l'envoi via Brevo");
       }
+
+      const result = await response.json();
+      console.log("Succès Brevo - ID du message:", result.messageId);
 
       setStatus("sent");
       setName("");

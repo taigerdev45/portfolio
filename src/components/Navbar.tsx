@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X, Monitor } from "lucide-react";
 
+import Image from "next/image";
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -23,14 +25,23 @@ export default function Navbar() {
         <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50 rounded-2xl shadow-lg shadow-black/5">
           <div className="flex justify-between h-16 md:h-20 px-4 md:px-8">
             <div className="flex items-center">
-              <div className="group flex items-center space-x-2">
+              <div className="group flex items-center space-x-3">
                 <Link href="/" className="flex items-center space-x-2">
-                  <span className="text-lg md:text-xl font-black tracking-tight text-gray-900 dark:text-white">
-                    PORTFOLIO
+                  <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-xl">
+                    <Image 
+                      src="/logoportfolio.png"
+                      alt="Logo"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="text-lg md:text-xl font-black tracking-tight text-gray-900 dark:text-white uppercase">
+                    Portfolio
                   </span>
                 </Link>
                 <Link 
                   href="/admin/login" 
+                   prefetch={false}
                   className="p-2 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all ml-1 hover:scale-110 active:scale-95"
                   title="Administration"
                 >
@@ -45,6 +56,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  prefetch={false}
                   className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
                     pathname === link.href 
                       ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400" 
@@ -86,6 +98,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center px-6 py-4 rounded-2xl text-base font-black transition-all ${
                   pathname === link.href

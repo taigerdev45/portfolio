@@ -121,6 +121,14 @@ export interface Feature {
   order: number;
 }
 
+export interface Skill {
+  id?: string;
+  name: string;
+  icon: string; // base64 ou URL de l'image
+  category?: string;
+  order: number;
+}
+
 export const getSettings = async (): Promise<Settings> => {
   const settingsRef = doc(db, "settings", "general");
   const settingsDoc = await getDoc(settingsRef);
@@ -177,6 +185,30 @@ export const updateFeature = async (id: string, feature: Partial<Feature>) => {
 
 export const deleteFeature = async (id: string) => {
   const docRef = doc(db, "features", id);
+  return await deleteDoc(docRef);
+};
+
+// Skills Services
+export const getSkills = async (): Promise<Skill[]> => {
+  const q = query(collection(db, "skills"), orderBy("order", "asc"));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Skill[];
+};
+
+export const addSkill = async (skill: Omit<Skill, "id">) => {
+  return await addDoc(collection(db, "skills"), skill);
+};
+
+export const updateSkill = async (id: string, skill: Partial<Skill>) => {
+  const docRef = doc(db, "skills", id);
+  return await updateDoc(docRef, skill);
+};
+
+export const deleteSkill = async (id: string) => {
+  const docRef = doc(db, "skills", id);
   return await deleteDoc(docRef);
 };
 

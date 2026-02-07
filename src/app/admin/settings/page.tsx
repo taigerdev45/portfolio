@@ -215,15 +215,15 @@ export default function AdminSettings() {
               <input
                 type="password"
                 value={settings.brevoApiKey || ""}
-                onChange={(e) => setSettings({ ...settings, brevoApiKey: e.target.value })}
+                onChange={(e) => setSettings({ ...settings, brevoApiKey: e.target.value.trim() })}
                 className="w-full px-5 md:px-6 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-300 font-bold text-base md:text-lg text-blue-950 dark:text-white"
                 placeholder="xkeysib-..."
               />
+              <p className="mt-2 text-[10px] md:text-xs text-blue-900/40 dark:text-slate-500 font-bold italic">
+                * Utilisez la clé <strong>API v3</strong> de Brevo. Assurez-vous que l&apos;adresse email de contact ci-dessus est bien un <strong>expéditeur vérifié</strong> dans votre compte Brevo.
+              </p>
             </div>
           </div>
-          <p className="text-[10px] md:text-xs text-blue-900/40 dark:text-slate-500 font-bold italic">
-            * Cette clé API est nécessaire pour envoyer les messages du formulaire de contact via Brevo.
-          </p>
         </div>
 
         <div className="space-y-4 md:space-y-6">

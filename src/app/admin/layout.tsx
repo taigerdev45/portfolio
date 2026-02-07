@@ -4,10 +4,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
-import { LayoutDashboard, FolderKanban, LogOut, Home, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, FolderKanban, LogOut, Home, Settings, Menu, X, Award } from "lucide-react";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function AdminLayout({
   children,
@@ -54,6 +55,7 @@ export default function AdminLayout({
   const navItems = [
     { href: "/admin", icon: <LayoutDashboard size={20} />, label: "Tableau de bord" },
     { href: "/admin/projects", icon: <FolderKanban size={20} />, label: "Projets" },
+    { href: "/admin/skills", icon: <Award size={20} />, label: "Compétences" },
     { href: "/admin/settings", icon: <Settings size={20} />, label: "Paramètres" },
   ];
 
@@ -62,8 +64,13 @@ export default function AdminLayout({
       {/* Mobile Header */}
       <header className="md:hidden bg-white/80 backdrop-blur-xl border-b border-blue-100 dark:border-slate-800 p-4 sticky top-0 z-50 flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <div className="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-lg font-black text-lg shadow-lg shadow-blue-200">
-            A
+          <div className="relative w-8 h-8 overflow-hidden rounded-lg">
+            <Image 
+              src="/logoportfolio.png"
+              alt="Logo"
+              fill
+              className="object-contain"
+            />
           </div>
           <h2 className="text-lg font-black text-blue-950 dark:text-white tracking-tight uppercase">Admin</h2>
         </div>
@@ -90,8 +97,13 @@ export default function AdminLayout({
       `}>
         <div className="p-8 hidden md:block">
           <div className="flex items-center space-x-3 group">
-            <div className="bg-linear-to-br from-blue-600 to-indigo-700 text-white w-10 h-10 flex items-center justify-center rounded-xl font-black text-xl shadow-lg shadow-blue-500/30 group-hover:rotate-6 transition-transform">
-              A
+            <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-lg shadow-blue-500/30 group-hover:rotate-6 transition-transform">
+              <Image 
+                src="/logoportfolio.png"
+                alt="Logo"
+                fill
+                className="object-contain"
+              />
             </div>
             <div>
               <h2 className="text-xl font-black text-blue-950 dark:text-white tracking-tight uppercase leading-none">Admin</h2>
@@ -102,8 +114,13 @@ export default function AdminLayout({
         
         <div className="md:hidden p-8 flex justify-between items-center border-b border-blue-50 dark:border-slate-800">
           <div className="flex items-center space-x-3">
-            <div className="bg-linear-to-br from-blue-600 to-indigo-700 text-white w-10 h-10 flex items-center justify-center rounded-xl font-black text-xl shadow-lg shadow-blue-500/30">
-              A
+            <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-lg shadow-blue-500/30">
+              <Image 
+                src="/logoportfolio.png"
+                alt="Logo"
+                fill
+                className="object-contain"
+              />
             </div>
             <h2 className="text-xl font-black text-blue-950 dark:text-white tracking-tight uppercase">Admin</h2>
           </div>

@@ -3,6 +3,7 @@
 import { Github, Linkedin, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getSettings, Settings } from "@/lib/services";
+import Image from "next/image";
 
 export default function Footer() {
   const [settings, setSettings] = useState<Settings | null>(null);
@@ -24,12 +25,17 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start space-x-2">
-              <div className="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-lg font-black text-sm">
-                TP
+            <div className="flex items-center justify-center md:justify-start space-x-3">
+              <div className="relative w-10 h-10 overflow-hidden rounded-lg">
+                <Image 
+                  src="/logoportfolio.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                />
               </div>
-              <span className="text-xl font-black tracking-tight text-gray-900 dark:text-white">
-                PORTFOLIO
+              <span className="text-xl font-black tracking-tight text-gray-900 dark:text-white uppercase">
+                Portfolio
               </span>
             </div>
             <p className="text-gray-500 dark:text-gray-400 max-w-sm text-lg">
