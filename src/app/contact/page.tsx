@@ -113,15 +113,15 @@ export default function ContactPage() {
             className="space-y-4 md:space-y-6 text-center lg:text-left"
           >
             <motion.div
-              animate={{ y: [0, -10, 0], rotate: [0, 3, 0, -3, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              animate={{ y: [0, -10, 0], rotate: [0, 5, 0, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto lg:mx-0 mb-8"
             >
               <Image 
                 src="/contact-avatar.png"
                 alt="Contact 3D Avatar"
                 fill
-                className="object-contain drop-shadow-2xl"
+                className="object-contain drop-shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:scale-110 transition-transform duration-500 cursor-pointer"
                 priority
                 sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
               />

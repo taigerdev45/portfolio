@@ -90,7 +90,7 @@ export default function ProjectsPage() {
               src="/projects-avatar.png"
               alt="Projects 3D Avatar"
               fill
-              className="object-contain drop-shadow-2xl"
+              className="object-contain drop-shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:rotate-3 transition-transform duration-700"
               priority
               sizes="(max-width: 768px) 192px, (max-width: 1280px) 256px, 320px"
             />
