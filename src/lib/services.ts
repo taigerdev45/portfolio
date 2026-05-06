@@ -59,6 +59,18 @@ export interface Stats {
   pageViews: number;
 }
 
+export interface AnalyticsEvent {
+  id?: string;
+  type: "page_view" | "session_start" | "session_end";
+  path: string;
+  country: string;
+  city: string;
+  timestamp: { seconds: number; nanoseconds: number } | unknown; 
+  sessionId: string;
+  duration?: number; // en secondes
+  hour: number; // 0-23 pour les stats de fréquence
+}
+
 // Projects Services
 export const getProjects = async (): Promise<Project[]> => {
   const cached = getCachedData<Project[]>("projects");
@@ -104,25 +116,75 @@ export const trackClick = async (id: string) => {
 };
 
 // Stats Services
-export const trackVisit = async () => {
-  const statsRef = doc(db, "stats", "global");
-  const statsDoc = await getDoc(statsRef);
+export const trackEvent = async (type: AnalyticsEvent["type"], path: string, duration?: number) => {
+  try {
+    if (typeof window === "undefined") return;
 
-  if (!statsDoc.exists()) {
-    await setDoc(statsRef, { visits: 1, pageViews: 1 });
-  } else {
-    await updateDoc(statsRef, {
-      visits: increment(1),
-      pageViews: increment(1),
-    });
+    // Session management
+    let sessionId = sessionStorage.getItem("portfolio_session_id");
+    if (!sessionId) {
+      sessionId = Math.random().toString(36).substring(2, 15);
+      sessionStorage.setItem("portfolio_session_id", sessionId);
+    }
+
+    // Geolocation
+    let country = "Unknown";
+    let city = "Unknown";
+    
+    const cachedGeo = sessionStorage.getItem("user_geo");
+    if (cachedGeo) {
+      const geo = JSON.parse(cachedGeo);
+      country = geo.country;
+      city = geo.city;
+    } else {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        const data = await res.json();
+        country = data.country_name || "Unknown";
+        city = data.city || "Unknown";
+        sessionStorage.setItem("user_geo", JSON.stringify({ country, city }));
+      } catch (e) {
+        console.error("Geo tracking failed:", e);
+      }
+    }
+
+    const event: AnalyticsEvent = {
+      type,
+      path,
+      country,
+      city,
+      sessionId,
+      duration,
+      timestamp: serverTimestamp(),
+      hour: new Date().getHours(),
+    };
+
+    await addDoc(collection(db, "analytics"), event);
+    
+    // Global counters
+    if (type === "session_start" || type === "page_view") {
+      const statsRef = doc(db, "stats", "global");
+      const statsDoc = await getDoc(statsRef);
+      if (!statsDoc.exists()) {
+        await setDoc(statsRef, { visits: 1, pageViews: 1 });
+      } else {
+        await updateDoc(statsRef, {
+          visits: type === "session_start" ? increment(1) : increment(0),
+          pageViews: increment(1),
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Tracking error:", error);
   }
 };
 
+export const trackVisit = async () => {
+  await trackEvent("session_start", window.location.pathname);
+};
+
 export const trackPageView = async () => {
-  const statsRef = doc(db, "stats", "global");
-  await updateDoc(statsRef, {
-    pageViews: increment(1),
-  });
+  await trackEvent("page_view", window.location.pathname);
 };
 
 export const getStats = async (): Promise<Stats> => {
@@ -132,6 +194,15 @@ export const getStats = async (): Promise<Stats> => {
     return statsDoc.data() as Stats;
   }
   return { visits: 0, pageViews: 0 };
+};
+
+export const getDetailedAnalytics = async (): Promise<AnalyticsEvent[]> => {
+  const q = query(collection(db, "analytics"), orderBy("timestamp", "desc"));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  })) as AnalyticsEvent[];
 };
 
 // General Settings (Texts)
