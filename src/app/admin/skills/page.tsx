@@ -12,15 +12,15 @@ import { Plus, Pencil, Trash2, X, Upload, Award } from "lucide-react";
 import Image from "next/image";
 
 export default function AdminSkills() {
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [skills, setSkills] = useState<Array<Skill>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingSkill, setEditingSkill] = useState<Skill | null>(null);
 
   // Form state
-  const [name, setName] = useState("");
-  const [icon, setIcon] = useState("");
-  const [order, setOrder] = useState(0);
+  const [name, setName] = useState<string>("");
+  const [icon, setIcon] = useState<string>("");
+  const [order, setOrder] = useState<number>(0);
 
   const fetchSkills = useCallback(async () => {
     setLoading(true);
@@ -183,7 +183,11 @@ export default function AdminSkills() {
               <h2 className="text-xl md:text-2xl font-black text-blue-950 dark:text-white uppercase tracking-tight">
                 {editingSkill ? "Modifier Compétence" : "Nouvelle Compétence"}
               </h2>
-              <button onClick={closeModal} className="p-2 text-blue-900/40 dark:text-slate-500 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-xl transition-colors">
+              <button 
+                onClick={closeModal} 
+                className="p-2 text-blue-900/40 dark:text-slate-500 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                aria-label="Fermer la modale"
+              >
                 <X size={24} />
               </button>
             </div>

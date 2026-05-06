@@ -11,6 +11,7 @@ import {
   setDoc,
   getDoc,
   serverTimestamp,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -47,7 +48,7 @@ export interface Project {
   image: string; // base64
   videoUrl?: string; // URL de la vidéo (YouTube, Vimeo, etc.)
   githubUrl?: string; // Lien GitHub du projet
-  technologies?: string[]; // Technologies utilisées (ex: ["Next.js", "Tailwind"])
+  technologies?: Array<string>; // Technologies utilisées (ex: ["Next.js", "Tailwind"])
   completionLevel: number; // Niveau de réalisation (0-100)
   status: "online" | "local"; // Statut du projet
   clicks: number;
@@ -72,8 +73,8 @@ export interface AnalyticsEvent {
 }
 
 // Projects Services
-export const getProjects = async (): Promise<Project[]> => {
-  const cached = getCachedData<Project[]>("projects");
+export const getProjects = async (): Promise<Array<Project>> => {
+  const cached = getCachedData<Array<Project>>("projects");
   if (cached) return cached;
 
   const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
@@ -196,13 +197,33 @@ export const getStats = async (): Promise<Stats> => {
   return { visits: 0, pageViews: 0 };
 };
 
-export const getDetailedAnalytics = async (): Promise<AnalyticsEvent[]> => {
+export const getDetailedAnalytics = async (): Promise<Array<AnalyticsEvent>> => {
   const q = query(collection(db, "analytics"), orderBy("timestamp", "desc"));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data()
-  })) as AnalyticsEvent[];
+  })) as Array<AnalyticsEvent>;
+};
+
+export const subscribeToStats = (callback: (stats: Stats) => void) => {
+  const statsRef = doc(db, "stats", "global");
+  return onSnapshot(statsRef, (doc) => {
+    if (doc.exists()) {
+      callback(doc.data() as Stats);
+    }
+  });
+};
+
+export const subscribeToDetailedAnalytics = (callback: (events: Array<AnalyticsEvent>) => void) => {
+  const q = query(collection(db, "analytics"), orderBy("timestamp", "desc"));
+  return onSnapshot(q, (snapshot) => {
+    const events = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Array<AnalyticsEvent>;
+    callback(events);
+  });
 };
 
 // General Settings (Texts)

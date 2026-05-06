@@ -12,21 +12,21 @@ import { Plus, Pencil, Trash2, X, Upload } from "lucide-react";
 import Image from "next/image";
 
 export default function AdminProjects() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projects, setProjects] = useState<Array<Project>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   // Form state
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [link, setLink] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
-  const [githubUrl, setGithubUrl] = useState("");
-  const [technologies, setTechnologies] = useState("");
-  const [completionLevel, setCompletionLevel] = useState(100);
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [link, setLink] = useState<string>("");
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [githubUrl, setGithubUrl] = useState<string>("");
+  const [technologies, setTechnologies] = useState<string>("");
+  const [completionLevel, setCompletionLevel] = useState<number>(100);
   const [status, setStatus] = useState<"online" | "local">("online");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState<string>("");
 
   const fetchProjects = useCallback(async () => {
     const p = await getProjects();

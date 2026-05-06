@@ -12,7 +12,7 @@ interface HeroProps {
 
 export default function Hero({ settings }: HeroProps) {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20 md:py-0">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-28 pb-20 md:py-0">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/4 -left-20 w-64 h-64 md:w-96 md:h-96 bg-blue-500/20 rounded-full blur-[80px] md:blur-[120px] animate-pulse" />
@@ -76,7 +76,7 @@ export default function Hero({ settings }: HeroProps) {
             initial={{ opacity: 0, scale: 0.8, rotateY: 30 }}
             animate={{ opacity: 1, scale: 1, rotateY: 0 }}
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="relative perspective-1000 order-first lg:order-last"
+            className="relative perspective-1000 order-first lg:order-last mt-8 lg:mt-0"
           >
             <motion.div
               animate={{ 

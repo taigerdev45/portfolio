@@ -9,10 +9,10 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-export default function ProjectModal({ project, onClose }: ProjectModalProps) {
+export default function ProjectModal({ project, onClose }: ProjectModalProps): React.JSX.Element | null {
   if (!project) return null;
 
-  const getEmbedUrl = (url?: string) => {
+  const getEmbedUrl = (url?: string): string | null => {
     if (!url) return null;
     if (url.includes("youtube.com/watch?v=")) {
       return url.replace("watch?v=", "embed/");
@@ -83,8 +83,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </div>
                 <div className="relative h-4 w-full bg-blue-50 dark:bg-slate-800 rounded-full overflow-hidden border border-blue-100 dark:border-slate-700">
                   <div 
-                    className="absolute inset-0 bg-linear-to-r from-blue-600 to-indigo-500 transition-all duration-1000 ease-out"
-                    style={{ width: `${project.completionLevel || 0}%` } as React.CSSProperties}
+                    className={`absolute inset-0 bg-linear-to-r from-blue-600 to-indigo-500 transition-all duration-1000 ease-out w-[${project.completionLevel || 0}%]`}
                   >
                     {/* Liquid Wave Effect */}
                     <div className="absolute inset-0 opacity-30">

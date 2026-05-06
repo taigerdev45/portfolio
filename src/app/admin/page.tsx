@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getStats, getProjects, getDetailedAnalytics, Project, Stats, AnalyticsEvent } from "@/lib/services";
+import { getProjects, subscribeToStats, subscribeToDetailedAnalytics, Project, Stats, AnalyticsEvent } from "@/lib/services";
 import {
   BarChart,
   Bar,
@@ -25,23 +25,32 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    // 1. Initial projects fetch (static)
+    const loadProjects = async () => {
       try {
-        const [s, p, a] = await Promise.all([
-          getStats(), 
-          getProjects(),
-          getDetailedAnalytics()
-        ]);
-        setStats(s);
+        const p = await getProjects();
         setProjects(p);
-        setAnalytics(a);
       } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching projects:", error);
       }
     };
-    fetchData();
+    loadProjects();
+
+    // 2. Real-time stats subscription
+    const unsubscribeStats = subscribeToStats((s) => {
+      setStats(s);
+    });
+
+    // 3. Real-time analytics subscription
+    const unsubscribeAnalytics = subscribeToDetailedAnalytics((a) => {
+      setAnalytics(a);
+      setLoading(false);
+    });
+
+    return () => {
+      unsubscribeStats();
+      unsubscribeAnalytics();
+    };
   }, []);
 
   if (loading) {
@@ -91,7 +100,10 @@ export default function AdminDashboard() {
   const sessions: Record<string, number[]> = {};
   analytics.forEach(event => {
     if (!sessions[event.sessionId]) sessions[event.sessionId] = [];
-    const ts = (event.timestamp as { seconds: number })?.seconds ? (event.timestamp as { seconds: number }).seconds * 1000 : Date.now();
+    let ts = Date.now();
+    if (event.timestamp && typeof event.timestamp === 'object' && 'seconds' in event.timestamp) {
+      ts = (event.timestamp as { seconds: number }).seconds * 1000;
+    }
     sessions[event.sessionId].push(ts);
   });
   
@@ -198,7 +210,9 @@ export default function AdminDashboard() {
           <div className="flex flex-wrap gap-2 mt-4 justify-center">
             {countryData.map((entry, index) => (
               <div key={index} className="flex items-center space-x-2 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-700">
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                <div 
+                  className={`w-2 h-2 rounded-full bg-[${COLORS[index % COLORS.length]}]`}
+                />
                 <span className="text-[10px] font-black uppercase text-slate-600 dark:text-slate-400">{entry.name}</span>
               </div>
             ))}

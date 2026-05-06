@@ -7,9 +7,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<Array<Project>>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
@@ -250,8 +250,7 @@ export default function ProjectsPage() {
                     </div>
                     <div className="relative h-4 w-full bg-blue-50 dark:bg-slate-800 rounded-full overflow-hidden border border-blue-100 dark:border-slate-700">
                       <div 
-                        className="absolute inset-0 bg-linear-to-r from-blue-600 to-indigo-500 transition-all duration-1000 ease-out"
-                        style={{ width: `${selectedProject.completionLevel || 0}%` } as React.CSSProperties}
+                        className={`absolute inset-0 bg-linear-to-r from-blue-600 to-indigo-500 transition-all duration-1000 ease-out w-[${selectedProject.completionLevel || 0}%]`}
                       >
                         {/* Liquid Wave Effect */}
                         <div className="absolute inset-0 opacity-30">
