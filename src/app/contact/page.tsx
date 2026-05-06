@@ -122,6 +122,8 @@ export default function ContactPage() {
                 alt="Contact 3D Avatar"
                 fill
                 className="object-contain drop-shadow-2xl"
+                priority
+                sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
               />
             </motion.div>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-950 dark:text-white tracking-tight leading-tight">

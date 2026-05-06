@@ -14,6 +14,30 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
+// Cache implementation
+const cache: Record<string, { data: unknown; timestamp: number }> = {};
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+const getCachedData = <T>(key: string): T | null => {
+  const item = cache[key];
+  if (item && Date.now() - item.timestamp < CACHE_DURATION) {
+    return item.data as T;
+  }
+  return null;
+};
+
+const setCachedData = (key: string, data: unknown) => {
+  cache[key] = { data, timestamp: Date.now() };
+};
+
+export const clearCache = (key?: string) => {
+  if (key) {
+    delete cache[key];
+  } else {
+    Object.keys(cache).forEach(k => delete cache[k]);
+  }
+};
+
 // Interfaces
 export interface Project {
   id?: string;
@@ -37,15 +61,22 @@ export interface Stats {
 
 // Projects Services
 export const getProjects = async (): Promise<Project[]> => {
+  const cached = getCachedData<Project[]>("projects");
+  if (cached) return cached;
+
   const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => ({
+  const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Project[];
+  
+  setCachedData("projects", data);
+  return data;
 };
 
 export const addProject = async (project: Omit<Project, "id" | "clicks">) => {
+  clearCache("projects");
   return await addDoc(collection(db, "projects"), {
     ...project,
     clicks: 0,
@@ -54,11 +85,13 @@ export const addProject = async (project: Omit<Project, "id" | "clicks">) => {
 };
 
 export const updateProject = async (id: string, project: Partial<Project>) => {
+  clearCache("projects");
   const docRef = doc(db, "projects", id);
   return await updateDoc(docRef, project);
 };
 
 export const deleteProject = async (id: string) => {
+  clearCache("projects");
   const docRef = doc(db, "projects", id);
   return await deleteDoc(docRef);
 };
@@ -130,38 +163,53 @@ export interface Skill {
 }
 
 export const getSettings = async (): Promise<Settings> => {
+  const cached = getCachedData<Settings>("settings");
+  if (cached) return cached;
+
   const settingsRef = doc(db, "settings", "general");
   const settingsDoc = await getDoc(settingsRef);
+  let data: Settings;
+  
   if (settingsDoc.exists()) {
-    const data = settingsDoc.data();
-    return {
-      heroTitle: data.heroTitle || "",
-      heroSubtitle: data.heroSubtitle || "",
-      aboutText: data.aboutText || "",
-      contactEmail: data.contactEmail || "",
-      githubUrl: data.githubUrl || "",
-      linkedinUrl: data.linkedinUrl || "",
-      brevoApiKey: data.brevoApiKey || "",
+    const docData = settingsDoc.data();
+    data = {
+      heroTitle: docData.heroTitle || "",
+      heroSubtitle: docData.heroSubtitle || "",
+      aboutText: docData.aboutText || "",
+      contactEmail: docData.contactEmail || "",
+      githubUrl: docData.githubUrl || "",
+      linkedinUrl: docData.linkedinUrl || "",
+      brevoApiKey: docData.brevoApiKey || "",
     } as Settings;
+  } else {
+    data = {
+      heroTitle: "Bienvenue sur mon Portfolio",
+      heroSubtitle: "Développeur Fullstack & Passionné",
+      aboutText: "Je crée des solutions web modernes et performantes.",
+      contactEmail: "votre@email.com",
+      githubUrl: "",
+      linkedinUrl: "",
+    };
   }
-  return {
-    heroTitle: "Bienvenue sur mon Portfolio",
-    heroSubtitle: "Développeur Fullstack & Passionné",
-    aboutText: "Je crée des solutions web modernes et performantes.",
-    contactEmail: "votre@email.com",
-    githubUrl: "",
-    linkedinUrl: "",
-  };
+
+  setCachedData("settings", data);
+  return data;
 };
 
 // Features Services
 export const getFeatures = async (): Promise<Feature[]> => {
+  const cached = getCachedData<Feature[]>("features");
+  if (cached) return cached;
+
   const q = query(collection(db, "features"), orderBy("order", "asc"));
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => ({
+  const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Feature[];
+
+  setCachedData("features", data);
+  return data;
 };
 
 export const addFeature = async (feature: Omit<Feature, "id">) => {
@@ -180,12 +228,18 @@ export const deleteFeature = async (id: string) => {
 
 // Skills Services
 export const getSkills = async (): Promise<Skill[]> => {
+  const cached = getCachedData<Skill[]>("skills");
+  if (cached) return cached;
+
   const q = query(collection(db, "skills"), orderBy("order", "asc"));
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => ({
+  const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Skill[];
+
+  setCachedData("skills", data);
+  return data;
 };
 
 export const addSkill = async (skill: Omit<Skill, "id">) => {
@@ -203,6 +257,7 @@ export const deleteSkill = async (id: string) => {
 };
 
 export const updateSettings = async (settings: Partial<Settings>) => {
+  clearCache("settings");
   const settingsRef = doc(db, "settings", "general");
   const settingsDoc = await getDoc(settingsRef);
   if (!settingsDoc.exists()) {

@@ -97,6 +97,8 @@ export default function Hero({ settings }: HeroProps) {
                   fill
                   className="object-contain drop-shadow-[0_20px_50px_rgba(59,130,246,0.3)]"
                   priority
+                  quality={90}
+                  sizes="(max-width: 768px) 300px, (max-width: 1024px) 400px, 500px"
                 />
               </div>
               

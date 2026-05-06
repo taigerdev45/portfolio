@@ -91,6 +91,8 @@ export default function ProjectsPage() {
               alt="Projects 3D Avatar"
               fill
               className="object-contain drop-shadow-2xl"
+              priority
+              sizes="(max-width: 768px) 192px, (max-width: 1280px) 256px, 320px"
             />
           </motion.div>
         </motion.div>
