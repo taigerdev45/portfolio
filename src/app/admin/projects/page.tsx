@@ -142,8 +142,13 @@ export default function AdminProjects() {
 
   const handleDelete = async (id: string) => {
     if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
-      await deleteProject(id);
-      fetchProjects();
+      try {
+        await deleteProject(id);
+        fetchProjects();
+      } catch (error) {
+        console.error("Error deleting project:", error);
+        alert("Erreur lors de la suppression du projet. Vérifiez vos permissions.");
+      }
     }
   };
 
@@ -250,6 +255,7 @@ export default function AdminProjects() {
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="p-2 hover:bg-white rounded-xl transition-colors text-blue-900/40 hover:text-blue-600"
+                aria-label="Fermer la modale"
               >
                 <X size={24} />
               </button>
@@ -309,8 +315,9 @@ export default function AdminProjects() {
                   />
                 </div>
                 <div className="space-y-1.5 md:space-y-2">
-                  <label className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Niveau de réalisation ({completionLevel}%)</label>
+                  <label htmlFor="completionLevel" className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Niveau de réalisation ({completionLevel}%)</label>
                   <input
+                    id="completionLevel"
                     type="range"
                     min="0"
                     max="100"
@@ -320,11 +327,13 @@ export default function AdminProjects() {
                   />
                 </div>
                 <div className="space-y-1.5 md:space-y-2">
-                  <label className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Statut du projet</label>
+                  <label htmlFor="projectStatus" className="text-[10px] md:text-xs font-black text-blue-900/40 uppercase tracking-widest ml-1">Statut du projet</label>
                   <select
+                    id="projectStatus"
                     value={status}
                     onChange={(e) => setStatus(e.target.value as "online" | "local")}
                     className="w-full px-4 md:px-5 py-3.5 md:py-4 bg-blue-50/50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-200 dark:focus:border-blue-900 rounded-xl md:rounded-2xl outline-none transition-all font-bold text-base md:text-lg text-blue-950 dark:text-white"
+                    aria-label="Statut du projet"
                   >
                     <option value="online">En ligne</option>
                     <option value="local">Local</option>

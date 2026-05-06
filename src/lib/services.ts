@@ -158,20 +158,10 @@ export const getSettings = async (): Promise<Settings> => {
 export const getFeatures = async (): Promise<Feature[]> => {
   const q = query(collection(db, "features"), orderBy("order", "asc"));
   const querySnapshot = await getDocs(q);
-  const features = querySnapshot.docs.map((doc) => ({
+  return querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Feature[];
-
-  if (features.length === 0) {
-    // Données par défaut si vide
-    return [
-      { title: "Développement", description: "Expertise en React, Next.js et architectures web modernes.", icon: "Code2", color: "blue", order: 1 },
-      { title: "Design UI/UX", description: "Création d'interfaces élégantes et intuitives.", icon: "Layout", color: "purple", order: 2 },
-      { title: "Performance", description: "Optimisation avancée pour le SEO et la vitesse.", icon: "Rocket", color: "green", order: 3 },
-    ];
-  }
-  return features;
 };
 
 export const addFeature = async (feature: Omit<Feature, "id">) => {

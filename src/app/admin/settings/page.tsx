@@ -56,11 +56,16 @@ export default function AdminSettings() {
 
   const handleDeleteFeature = async (id?: string, index?: number) => {
     if (confirm("Supprimer cette carte ?")) {
-      if (id) {
-        await deleteFeature(id);
-        setFeatures(features.filter(f => f.id !== id));
-      } else if (index !== undefined) {
-        setFeatures(features.filter((_, i) => i !== index));
+      try {
+        if (id) {
+          await deleteFeature(id);
+          setFeatures(features.filter(f => f.id !== id));
+        } else if (index !== undefined) {
+          setFeatures(features.filter((_, i) => i !== index));
+        }
+      } catch (error) {
+        console.error("Error deleting feature:", error);
+        alert("Erreur lors de la suppression. Vérifiez vos permissions.");
       }
     }
   };
@@ -174,8 +179,9 @@ export default function AdminSettings() {
             </h3>
             <div className="space-y-3 md:space-y-4">
               <div>
-                <label className="block text-[10px] md:text-sm font-black text-blue-900/70 dark:text-slate-400 mb-1.5 md:mb-2 uppercase tracking-wider">Email de contact</label>
+                <label htmlFor="contactEmail" className="block text-[10px] md:text-sm font-black text-blue-900/70 dark:text-slate-400 mb-1.5 md:mb-2 uppercase tracking-wider">Email de contact</label>
                 <input
+                  id="contactEmail"
                   type="email"
                   value={settings.contactEmail}
                   onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
@@ -183,8 +189,9 @@ export default function AdminSettings() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] md:text-sm font-black text-blue-900/70 dark:text-slate-400 mb-1.5 md:mb-2 uppercase tracking-wider">URL GitHub</label>
+                <label htmlFor="githubUrl" className="block text-[10px] md:text-sm font-black text-blue-900/70 dark:text-slate-400 mb-1.5 md:mb-2 uppercase tracking-wider">URL GitHub</label>
                 <input
+                  id="githubUrl"
                   type="url"
                   value={settings.githubUrl}
                   onChange={(e) => setSettings({ ...settings, githubUrl: e.target.value })}
@@ -192,8 +199,9 @@ export default function AdminSettings() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] md:text-sm font-black text-blue-900/70 dark:text-slate-400 mb-1.5 md:mb-2 uppercase tracking-wider">URL LinkedIn</label>
+                <label htmlFor="linkedinUrl" className="block text-[10px] md:text-sm font-black text-blue-900/70 dark:text-slate-400 mb-1.5 md:mb-2 uppercase tracking-wider">URL LinkedIn</label>
                 <input
+                  id="linkedinUrl"
                   type="url"
                   value={settings.linkedinUrl}
                   onChange={(e) => setSettings({ ...settings, linkedinUrl: e.target.value })}
@@ -276,6 +284,7 @@ export default function AdminSettings() {
                     type="button"
                     onClick={() => handleDeleteFeature(feature.id, index)}
                     className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
+                    aria-label="Supprimer cette carte"
                   >
                     <Trash2 size={18} />
                   </button>
@@ -283,8 +292,9 @@ export default function AdminSettings() {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Titre</label>
+                    <label htmlFor={`featureTitle-${index}`} className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Titre</label>
                     <input
+                      id={`featureTitle-${index}`}
                       type="text"
                       value={feature.title}
                       onChange={(e) => handleFeatureChange(index, { title: e.target.value })}
@@ -293,8 +303,9 @@ export default function AdminSettings() {
                   </div>
                   
                   <div>
-                    <label className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Description</label>
+                    <label htmlFor={`featureDesc-${index}`} className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Description</label>
                     <textarea
+                      id={`featureDesc-${index}`}
                       value={feature.description}
                       onChange={(e) => handleFeatureChange(index, { description: e.target.value })}
                       className="w-full px-4 py-3 bg-blue-50/30 dark:bg-slate-900/50 border border-blue-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all h-24 font-bold text-sm text-blue-950 dark:text-white resize-none"
@@ -303,11 +314,13 @@ export default function AdminSettings() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Icône</label>
+                      <label htmlFor={`featureIcon-${index}`} className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Icône</label>
                       <select
+                        id={`featureIcon-${index}`}
                         value={feature.icon}
                         onChange={(e) => handleFeatureChange(index, { icon: e.target.value })}
                         className="w-full px-4 py-3 bg-blue-50/30 dark:bg-slate-900/50 border border-blue-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-sm text-blue-950 dark:text-white appearance-none"
+                        aria-label="Sélectionner l'icône"
                       >
                         {ICON_OPTIONS.map(opt => (
                           <option key={opt.name} value={opt.name}>{opt.name}</option>
@@ -315,11 +328,13 @@ export default function AdminSettings() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Couleur</label>
+                      <label htmlFor={`featureColor-${index}`} className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Couleur</label>
                       <select
+                        id={`featureColor-${index}`}
                         value={feature.color}
                         onChange={(e) => handleFeatureChange(index, { color: e.target.value })}
                         className="w-full px-4 py-3 bg-blue-50/30 dark:bg-slate-900/50 border border-blue-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-sm text-blue-950 dark:text-white appearance-none"
+                        aria-label="Sélectionner la couleur"
                       >
                         {COLOR_OPTIONS.map(color => (
                           <option key={color} value={color}>{color.charAt(0).toUpperCase() + color.slice(1)}</option>
