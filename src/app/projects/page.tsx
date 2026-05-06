@@ -84,16 +84,18 @@ export default function ProjectsPage() {
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="relative w-48 h-48 md:w-64 md:h-64 xl:w-80 xl:h-80"
+            className="relative w-48 h-48 md:w-64 md:h-64 xl:w-80 xl:h-80 group"
           >
             <Image
               src="/projects-avatar.png"
               alt="Projects 3D Avatar"
               fill
-              className="object-contain drop-shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:rotate-3 transition-transform duration-700"
+              className="relative z-10 object-contain drop-shadow-[0_20px_50px_rgba(37,99,235,0.4)] group-hover:scale-105 transition-transform duration-700"
               priority
               sizes="(max-width: 768px) 192px, (max-width: 1280px) 256px, 320px"
             />
+            {/* Background Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5 bg-blue-500/10 rounded-full blur-[60px] md:blur-[100px] -z-0 animate-pulse" />
           </motion.div>
         </motion.div>
       </div>
