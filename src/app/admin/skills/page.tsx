@@ -30,8 +30,13 @@ export default function AdminSkills() {
   }, []);
 
   useEffect(() => {
-    fetchSkills();
-  }, [fetchSkills]);
+    const loadData = async () => {
+      const s = await getSkills();
+      setSkills(s);
+      setLoading(false);
+    };
+    loadData();
+  }, []);
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -107,17 +112,17 @@ export default function AdminSkills() {
     <div className="p-4 md:p-8 space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center space-x-4">
-          <div className="bg-blue-600 p-3 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none">
+          <div className="bg-sky-400 p-3 rounded-2xl shadow-lg shadow-sky-200 dark:shadow-none">
             <Award className="text-white" size={28} />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-black text-blue-950 dark:text-white uppercase tracking-tight">Compétences</h1>
-            <p className="text-sm font-bold text-blue-900/40 dark:text-slate-500 uppercase tracking-widest">Langages & Technologies</p>
+            <h1 className="text-2xl md:text-3xl font-black text-slate-950 dark:text-white uppercase tracking-tight">Compétences</h1>
+            <p className="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Langages & Technologies</p>
           </div>
         </div>
         <button
           onClick={() => openModal()}
-          className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-2xl font-black transition-all duration-300 shadow-xl shadow-blue-500/20 active:scale-95 group"
+          className="flex items-center justify-center space-x-2 bg-sky-400 hover:bg-sky-500 text-white px-6 py-4 rounded-2xl font-black transition-all duration-300 shadow-xl shadow-sky-400/20 active:scale-95 group uppercase text-xs tracking-widest"
         >
           <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
           <span>AJOUTER</span>
@@ -147,13 +152,15 @@ export default function AdminSkills() {
                 <div className="flex space-x-1">
                   <button
                     onClick={() => openModal(skill)}
-                    className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                    className="p-2 text-sky-600 hover:bg-sky-50 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                    aria-label={`Modifier ${skill.name}`}
                   >
                     <Pencil size={18} />
                   </button>
                   <button
                     onClick={() => handleDelete(skill.id!)}
                     className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                    aria-label={`Supprimer ${skill.name}`}
                   >
                     <Trash2 size={18} />
                   </button>
@@ -201,8 +208,9 @@ export default function AdminSkills() {
                     type="number"
                     value={order}
                     onChange={(e) => setOrder(Number(e.target.value))}
-                    className="w-full px-5 py-4 bg-blue-50/50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-300 font-bold text-blue-950 dark:text-white"
+                    className="w-full px-5 py-4 bg-sky-50/50 dark:bg-slate-800 border border-sky-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all duration-300 font-bold text-slate-950 dark:text-white"
                     required
+                    placeholder="0"
                   />
                 </div>
                 

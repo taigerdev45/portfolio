@@ -145,8 +145,8 @@ export default function AdminSettings() {
       <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-xl dark:bg-slate-900 rounded-4xl md:rounded-4xl shadow-2xl shadow-blue-900/5 border border-blue-100 dark:border-slate-800 p-6 md:p-12 space-y-8 md:space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
           <div className="space-y-4 md:space-y-6">
-            <h3 className="text-lg md:text-xl font-black text-blue-950 dark:text-white flex items-center space-x-2">
-              <span className="w-1.5 md:w-2 h-6 md:h-8 bg-blue-600 rounded-full block"></span>
+            <h3 className="text-lg md:text-xl font-black text-slate-950 dark:text-white flex items-center space-x-2">
+              <span className="w-1.5 md:w-2 h-6 md:h-8 bg-sky-400 rounded-full block"></span>
               <span>Accueil</span>
             </h3>
             <div className="space-y-3 md:space-y-4">
@@ -173,8 +173,8 @@ export default function AdminSettings() {
           </div>
 
           <div className="space-y-4 md:space-y-6">
-            <h3 className="text-lg md:text-xl font-black text-blue-950 dark:text-white flex items-center space-x-2">
-              <span className="w-1.5 md:w-2 h-6 md:h-8 bg-blue-600 rounded-full block"></span>
+            <h3 className="text-lg md:text-xl font-black text-slate-950 dark:text-white flex items-center space-x-2">
+              <span className="w-1.5 md:w-2 h-6 md:h-8 bg-sky-400 rounded-full block"></span>
               <span>Contact & Réseaux</span>
             </h3>
             <div className="space-y-3 md:space-y-4">
@@ -235,9 +235,9 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        <div className="space-y-4 md:space-y-6">
-          <h3 className="text-lg md:text-xl font-black text-blue-950 dark:text-white flex items-center space-x-2">
-            <span className="w-1.5 md:w-2 h-6 md:h-8 bg-blue-600 rounded-full block"></span>
+        <div className="space-y-4 md:space-y-6 border-t border-sky-100 dark:border-slate-800 pt-8">
+          <h3 className="text-lg md:text-xl font-black text-slate-950 dark:text-white flex items-center space-x-2">
+            <span className="w-1.5 md:w-2 h-6 md:h-8 bg-sky-400 rounded-full block"></span>
             <span>À Propos</span>
           </h3>
           <div>
@@ -251,19 +251,19 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        <div className="space-y-4 md:space-y-6">
+        <div className="space-y-4 md:space-y-6 border-t border-sky-100 dark:border-slate-800 pt-8">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg md:text-xl font-black text-blue-950 dark:text-white flex items-center space-x-2">
-              <span className="w-1.5 md:w-2 h-6 md:h-8 bg-blue-600 rounded-full block"></span>
+            <h3 className="text-lg md:text-xl font-black text-slate-950 dark:text-white flex items-center space-x-2">
+              <span className="w-1.5 md:w-2 h-6 md:h-8 bg-sky-400 rounded-full block"></span>
               <span>Cartes Descriptives (Accueil)</span>
             </h3>
             <button
               type="button"
               onClick={handleAddFeature}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-500/20 active:scale-95"
+              className="flex items-center space-x-2 px-4 py-2 bg-sky-400 hover:bg-sky-500 text-white rounded-xl font-black text-sm transition-all shadow-lg shadow-sky-400/20 active:scale-95"
             >
               <Plus size={18} />
-              <span className="hidden md:inline">Ajouter une carte</span>
+              <span className="hidden md:inline uppercase text-xs tracking-widest">Ajouter une carte</span>
             </button>
           </div>
 
@@ -271,14 +271,14 @@ export default function AdminSettings() {
             {features.map((feature, index) => (
               <div 
                 key={feature.id || `feature-${index}`} 
-                className="group relative space-y-4 p-6 bg-white dark:bg-slate-800/50 rounded-3xl border border-blue-100 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-500/50 transition-all shadow-sm hover:shadow-xl hover:shadow-blue-500/5"
+                className="group relative space-y-4 p-6 bg-white dark:bg-slate-800/50 rounded-3xl border border-sky-100 dark:border-slate-700 hover:border-sky-300 dark:hover:border-sky-500/50 transition-all shadow-sm hover:shadow-xl hover:shadow-sky-500/5"
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 font-black text-xs">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-900/30 text-sky-600 font-black text-xs">
                       {index + 1}
                     </span>
-                    <p className="text-xs font-black text-blue-600 uppercase tracking-widest">Carte</p>
+                    <p className="text-xs font-black text-sky-600 uppercase tracking-widest">Carte</p>
                   </div>
                   <button
                     type="button"
@@ -292,34 +292,34 @@ export default function AdminSettings() {
 
                 <div className="space-y-4">
                   <div>
-                    <label htmlFor={`featureTitle-${index}`} className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Titre</label>
+                    <label htmlFor={`featureTitle-${index}`} className="block text-[10px] font-black text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Titre</label>
                     <input
                       id={`featureTitle-${index}`}
                       type="text"
                       value={feature.title}
                       onChange={(e) => handleFeatureChange(index, { title: e.target.value })}
-                      className="w-full px-4 py-3 bg-blue-50/30 dark:bg-slate-900/50 border border-blue-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-sm text-blue-950 dark:text-white"
+                      className="w-full px-4 py-3 bg-sky-50/30 dark:bg-slate-900/50 border border-sky-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all font-bold text-sm text-slate-950 dark:text-white"
                     />
                   </div>
                   
                   <div>
-                    <label htmlFor={`featureDesc-${index}`} className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Description</label>
+                    <label htmlFor={`featureDesc-${index}`} className="block text-[10px] font-black text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Description</label>
                     <textarea
                       id={`featureDesc-${index}`}
                       value={feature.description}
                       onChange={(e) => handleFeatureChange(index, { description: e.target.value })}
-                      className="w-full px-4 py-3 bg-blue-50/30 dark:bg-slate-900/50 border border-blue-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all h-24 font-bold text-sm text-blue-950 dark:text-white resize-none"
+                      className="w-full px-4 py-3 bg-sky-50/30 dark:bg-slate-900/50 border border-sky-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all h-24 font-bold text-sm text-slate-950 dark:text-white resize-none"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor={`featureIcon-${index}`} className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Icône</label>
+                      <label htmlFor={`featureIcon-${index}`} className="block text-[10px] font-black text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Icône</label>
                       <select
                         id={`featureIcon-${index}`}
                         value={feature.icon}
                         onChange={(e) => handleFeatureChange(index, { icon: e.target.value })}
-                        className="w-full px-4 py-3 bg-blue-50/30 dark:bg-slate-900/50 border border-blue-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-sm text-blue-950 dark:text-white appearance-none"
+                        className="w-full px-4 py-3 bg-sky-50/30 dark:bg-slate-900/50 border border-sky-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all font-bold text-sm text-slate-950 dark:text-white appearance-none"
                         aria-label="Sélectionner l'icône"
                       >
                         {ICON_OPTIONS.map(opt => (
@@ -328,12 +328,12 @@ export default function AdminSettings() {
                       </select>
                     </div>
                     <div>
-                      <label htmlFor={`featureColor-${index}`} className="block text-[10px] font-black text-blue-900/70 dark:text-slate-400 mb-1 uppercase tracking-wider">Couleur</label>
+                      <label htmlFor={`featureColor-${index}`} className="block text-[10px] font-black text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Couleur</label>
                       <select
                         id={`featureColor-${index}`}
                         value={feature.color}
                         onChange={(e) => handleFeatureChange(index, { color: e.target.value })}
-                        className="w-full px-4 py-3 bg-blue-50/30 dark:bg-slate-900/50 border border-blue-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-bold text-sm text-blue-950 dark:text-white appearance-none"
+                        className="w-full px-4 py-3 bg-sky-50/30 dark:bg-slate-900/50 border border-sky-100 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all font-bold text-sm text-slate-950 dark:text-white appearance-none"
                         aria-label="Sélectionner la couleur"
                       >
                         {COLOR_OPTIONS.map(color => (
@@ -348,7 +348,7 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-6 md:pt-10 border-t border-blue-100 dark:border-slate-800">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-6 md:pt-10 border-t border-sky-100 dark:border-slate-800">
           <div className="flex items-center space-x-2 w-full md:w-auto">
             {status === "success" && (
               <div className="flex items-center justify-center space-x-2 bg-green-50 dark:bg-green-900/20 text-green-600 px-6 py-4 rounded-xl md:rounded-2xl font-bold animate-in zoom-in-95 duration-300 w-full md:w-auto">
@@ -366,14 +366,14 @@ export default function AdminSettings() {
           <button
             type="submit"
             disabled={saving}
-            className="w-full md:w-auto bg-blue-600 text-white px-8 md:px-10 py-4.5 md:py-4 rounded-xl md:rounded-2xl font-black flex items-center justify-center space-x-3 hover:bg-blue-700 hover:scale-[1.02] md:hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl shadow-blue-200 dark:shadow-none disabled:opacity-50 disabled:hover:scale-100"
+            className="w-full md:w-auto bg-sky-400 text-white px-8 md:px-10 py-4.5 md:py-4 rounded-xl md:rounded-2xl font-black flex items-center justify-center space-x-3 hover:bg-sky-500 hover:scale-[1.02] md:hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl shadow-sky-200 dark:shadow-none disabled:opacity-50 disabled:hover:scale-100"
           >
             {saving ? (
               <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
             ) : (
               <>
                 <Save size={20} />
-                <span>Enregistrer les modifications</span>
+                <span className="uppercase text-xs tracking-widest">Enregistrer les modifications</span>
               </>
             )}
           </button>

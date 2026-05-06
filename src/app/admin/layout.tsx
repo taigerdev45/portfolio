@@ -77,6 +77,7 @@ export default function AdminLayout({
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="p-2 text-blue-900/60 dark:text-slate-400"
+          aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -92,12 +93,12 @@ export default function AdminLayout({
 
       {/* Sidebar */}
       <aside className={`
-        fixed md:sticky top-0 left-0 z-60 h-full w-72 bg-white dark:bg-slate-900 border-r border-blue-100 dark:border-slate-800 flex flex-col transition-transform duration-300 md:translate-x-0
-        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+        fixed md:sticky top-4 left-4 z-60 h-[calc(100vh-2rem)] w-72 bg-white/90 backdrop-blur-xl dark:bg-slate-900/90 border border-blue-100 dark:border-slate-800 flex flex-col transition-transform duration-300 md:translate-x-0 rounded-[2.5rem] shadow-2xl shadow-blue-500/10
+        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
       `}>
         <div className="p-8 hidden md:block">
           <div className="flex items-center space-x-3 group">
-            <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-lg shadow-blue-500/30 group-hover:rotate-6 transition-transform">
+            <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-lg shadow-sky-500/30 group-hover:rotate-6 transition-transform">
               <Image 
                 src="/logoportfolio.png"
                 alt="Logo"
@@ -106,15 +107,15 @@ export default function AdminLayout({
               />
             </div>
             <div>
-              <h2 className="text-xl font-black text-blue-950 dark:text-white tracking-tight uppercase leading-none">Admin</h2>
-              <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Dashboard</span>
+              <h2 className="text-xl font-black text-slate-950 dark:text-white tracking-tight uppercase leading-none">Admin</h2>
+              <span className="text-[10px] font-black text-sky-400 uppercase tracking-widest">Dashboard</span>
             </div>
           </div>
         </div>
         
         <div className="md:hidden p-8 flex justify-between items-center border-b border-blue-50 dark:border-slate-800">
           <div className="flex items-center space-x-3">
-            <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-lg shadow-blue-500/30">
+            <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-lg shadow-sky-500/30">
               <Image 
                 src="/logoportfolio.png"
                 alt="Logo"
@@ -122,30 +123,34 @@ export default function AdminLayout({
                 className="object-contain"
               />
             </div>
-            <h2 className="text-xl font-black text-blue-950 dark:text-white tracking-tight uppercase">Admin</h2>
+            <h2 className="text-xl font-black text-slate-950 dark:text-white tracking-tight uppercase">Admin</h2>
           </div>
-          <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition-colors">
-            <X size={24} className="text-blue-900/40" />
+          <button 
+            onClick={() => setIsMobileMenuOpen(false)} 
+            className="p-2 hover:bg-sky-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            aria-label="Fermer le menu"
+          >
+            <X size={24} className="text-slate-900/40" />
           </button>
         </div>
 
-        <nav className="flex-1 px-4 py-8 md:py-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-4 py-8 md:py-4 space-y-2 overflow-y-auto custom-scrollbar">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               prefetch={false}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`flex items-center space-x-3 p-4 rounded-xl font-bold transition-all duration-300 group ${
+              className={`flex items-center space-x-3 p-4 rounded-2xl font-black transition-all duration-300 group ${
                 pathname === item.href
-                  ? "bg-blue-600 text-white shadow-xl shadow-blue-500/30 translate-x-1"
-                  : "text-blue-900/60 dark:text-slate-400 hover:bg-blue-50/50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-white"
+                  ? "bg-sky-400 text-white shadow-xl shadow-sky-400/30 translate-x-1"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-sky-500 dark:hover:text-white"
               }`}
             >
               <div className={`transition-transform duration-300 group-hover:scale-110 ${pathname === item.href ? "text-white" : ""}`}>
                 {item.icon}
               </div>
-              <span className="tracking-tight">{item.label}</span>
+              <span className="tracking-tight uppercase text-xs">{item.label}</span>
             </Link>
           ))}
           
@@ -153,12 +158,12 @@ export default function AdminLayout({
             <Link
               href="/"
               prefetch={false}
-              className="flex items-center space-x-3 p-4 text-blue-900/60 dark:text-slate-400 hover:bg-blue-50/50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-white rounded-xl font-bold transition-all group"
+              className="flex items-center space-x-3 p-4 text-slate-500 dark:text-slate-400 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-sky-500 dark:hover:text-white rounded-2xl font-black transition-all group"
             >
               <div className="transition-transform duration-300 group-hover:-translate-x-1">
                 <Home size={20} />
               </div>
-              <span className="tracking-tight">Voir le site</span>
+              <span className="tracking-tight uppercase text-xs">Voir le site</span>
             </Link>
           </div>
         </nav>
@@ -166,12 +171,12 @@ export default function AdminLayout({
         <div className="p-6 mt-auto border-t border-blue-50 dark:border-slate-800">
           <button
             onClick={handleSignOut}
-            className="flex items-center space-x-3 p-4 w-full text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl font-bold transition-all group"
+            className="flex items-center space-x-3 p-4 w-full text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-2xl font-black transition-all group"
           >
             <div className="transition-transform duration-300 group-hover:rotate-12">
               <LogOut size={20} />
             </div>
-            <span className="tracking-tight">Déconnexion</span>
+            <span className="tracking-tight uppercase text-xs">Déconnexion</span>
           </button>
         </div>
       </aside>

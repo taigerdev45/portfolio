@@ -16,7 +16,7 @@ import {
   AreaChart,
   Area,
 } from "recharts";
-import { Users, Eye, Briefcase, BarChart3, PieChart as PieIcon, Globe, Clock, Timer } from "lucide-react";
+import { Users, Eye, Briefcase, BarChart3, Globe, Clock, Timer } from "lucide-react";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
@@ -226,60 +226,65 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Top Pages / Duration Table */}
-        <div className="bg-white/80 backdrop-blur-sm dark:bg-slate-900 p-6 md:p-8 rounded-3xl md:rounded-4xl shadow-sm border border-blue-100 dark:border-slate-800">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-lg md:text-xl font-black text-slate-950 dark:text-white uppercase tracking-tight">Pages les plus vues</h3>
-            <div className="p-2 bg-blue-50 dark:bg-slate-800 rounded-xl">
-              <PieIcon size={20} className="text-blue-600 dark:text-blue-300" />
+        {/* Cross-tabulation: Country vs Pages */}
+        <div className="lg:col-span-2 bg-white/80 backdrop-blur-sm dark:bg-slate-900 p-6 md:p-10 rounded-3xl md:rounded-[3rem] shadow-sm border border-blue-100 dark:border-slate-800 overflow-hidden">
+          <div className="flex items-center justify-between mb-8 md:mb-12">
+            <div>
+              <h3 className="text-xl md:text-2xl font-black text-slate-950 dark:text-white uppercase tracking-tight">Analyse Croisée : Pays & Pages</h3>
+              <p className="text-xs font-black text-sky-400 uppercase tracking-widest mt-1">Répartition détaillée de l&apos;engagement</p>
+            </div>
+            <div className="p-3 bg-sky-50 dark:bg-sky-900/20 rounded-2xl">
+              <BarChart3 size={24} className="text-sky-500" />
             </div>
           </div>
-          <div className="space-y-4">
-            {Object.entries(analytics.reduce((acc, e) => {
-              if (!acc[e.path]) acc[e.path] = { count: 0, totalDuration: 0, sessions: new Set() };
-              acc[e.path].count++;
-              acc[e.path].sessions.add(e.sessionId);
-              return acc;
-            }, {} as Record<string, { count: number, totalDuration: number, sessions: Set<string> }>))
-            .sort((a, b) => b[1].count - a[1].count)
-            .slice(0, 5)
-            .map(([path, data], i) => {
-              // Calculate avg duration for this path (approximate using sessions)
-              const pathSessions = analytics.filter(e => e.path === path);
-              const sessionTimes: Record<string, number[]> = {};
-              pathSessions.forEach(e => {
-                if (!sessionTimes[e.sessionId]) sessionTimes[e.sessionId] = [];
-                const ts = (e.timestamp as { seconds: number })?.seconds ? (e.timestamp as { seconds: number }).seconds * 1000 : Date.now();
-                sessionTimes[e.sessionId].push(ts);
-              });
-              
-              let pathDurationSum = 0;
-              let pathSessionCount = 0;
-              Object.values(sessionTimes).forEach(times => {
-                if (times.length > 1) {
-                  pathDurationSum += (Math.max(...times) - Math.min(...times)) / 1000;
-                  pathSessionCount++;
-                }
-              });
-              const avgPathDuration = pathSessionCount > 0 ? Math.round(pathDurationSum / pathSessionCount) : 0;
-
-              return (
-                <div key={i} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700 hover:border-blue-200 transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-900 rounded-lg text-xs font-black text-blue-600 shadow-sm border border-blue-50 dark:border-slate-800">
-                      {i + 1}
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-black text-slate-700 dark:text-slate-300 font-mono">{path}</span>
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{avgPathDuration > 0 ? `~${formatDuration(avgPathDuration)} / session` : 'Vue unique'}</span>
-                    </div>
-                  </div>
-                  <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-xs font-black">
-                    {data.count} vues
-                  </span>
-                </div>
-              );
-            })}
+          
+          <div className="overflow-x-auto custom-scrollbar -mx-6 md:-mx-10 px-6 md:px-10">
+            <table className="w-full text-left border-separate border-spacing-y-2">
+              <thead>
+                <tr>
+                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-blue-50 dark:border-slate-800">Pays / Page</th>
+                  {Object.keys(analytics.reduce((acc, e) => { acc[e.path] = true; return acc; }, {} as Record<string, boolean>))
+                    .sort()
+                    .slice(0, 4)
+                    .map(path => (
+                      <th key={path} className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-blue-50 dark:border-slate-800 text-center">{path}</th>
+                    ))
+                  }
+                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-blue-50 dark:border-slate-800 text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {countryData.map((country, idx) => {
+                  const paths = Object.keys(analytics.reduce((acc, e) => { acc[e.path] = true; return acc; }, {} as Record<string, boolean>)).sort().slice(0, 4);
+                  let countryTotal = 0;
+                  
+                  return (
+                    <tr key={idx} className="group">
+                      <td className="px-6 py-5 bg-slate-50/50 dark:bg-slate-800/30 rounded-l-2xl border-y border-l border-blue-50/50 dark:border-slate-800/50">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-2 h-8 bg-sky-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <span className="font-black text-slate-900 dark:text-white uppercase text-xs">{country.name}</span>
+                        </div>
+                      </td>
+                      {paths.map(path => {
+                        const count = analytics.filter(e => e.country === country.name && e.path === path).length;
+                        countryTotal += count;
+                        return (
+                          <td key={path} className="px-6 py-5 bg-white dark:bg-slate-900 border-y border-blue-50/50 dark:border-slate-800/50 text-center">
+                            <span className={`text-sm font-black ${count > 0 ? 'text-sky-500' : 'text-slate-200 dark:text-slate-800'}`}>
+                              {count}
+                            </span>
+                          </td>
+                        );
+                      })}
+                      <td className="px-6 py-5 bg-sky-50/30 dark:bg-sky-900/10 rounded-r-2xl border-y border-r border-sky-100 dark:border-sky-900/50 text-right font-black text-sky-600">
+                        {countryTotal}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

@@ -186,7 +186,7 @@ export default function AdminProjects() {
             resetForm();
             setIsModalOpen(true);
           }}
-          className="w-full md:w-auto flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 md:py-3 rounded-xl md:rounded-2xl font-black transition-all shadow-lg shadow-blue-200 active:scale-95"
+          className="w-full md:w-auto flex items-center justify-center space-x-2 bg-sky-400 hover:bg-sky-500 text-white px-6 py-4 md:py-3 rounded-xl md:rounded-2xl font-black transition-all shadow-lg shadow-sky-200 active:scale-95 uppercase text-xs tracking-widest"
         >
           <Plus size={20} />
           <span>Nouveau Projet</span>
@@ -248,8 +248,8 @@ export default function AdminProjects() {
         <div className="fixed inset-0 z-60 flex items-end md:items-center justify-center p-0 md:p-4">
           <div className="absolute inset-0 bg-blue-950/40 backdrop-blur-sm animate-in fade-in duration-300" onClick={() => setIsModalOpen(false)} />
           <div className="bg-white dark:bg-slate-900 rounded-t-4xl md:rounded-4xl w-full max-w-2xl overflow-hidden shadow-2xl relative animate-in slide-in-from-bottom md:slide-in-from-bottom-0 md:zoom-in-95 duration-300 max-h-[90vh] flex flex-col">
-            <div className="p-6 md:p-8 border-b border-blue-50 dark:border-slate-800 flex justify-between items-center bg-blue-50/30 shrink-0">
-              <h2 className="text-xl md:text-2xl font-black text-blue-950 dark:text-white uppercase tracking-tight">
+            <div className="p-6 md:p-8 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center bg-sky-50/30 shrink-0">
+              <h2 className="text-xl md:text-2xl font-black text-slate-950 dark:text-white uppercase tracking-tight">
                 {editingProject ? "Modifier le projet" : "Nouveau Projet"}
               </h2>
               <button
