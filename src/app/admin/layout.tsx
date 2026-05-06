@@ -33,8 +33,8 @@ export default function AdminLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-sky-50/30 dark:bg-slate-950">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500"></div>
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default function AdminLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-blue-50/30 dark:bg-slate-950 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-sky-50/50 dark:bg-slate-950 flex flex-col md:flex-row">
       {/* Mobile Header */}
       <header className="md:hidden bg-white/80 backdrop-blur-xl border-b border-blue-100 dark:border-slate-800 p-4 sticky top-0 z-50 flex justify-between items-center">
         <div className="flex items-center space-x-3">
