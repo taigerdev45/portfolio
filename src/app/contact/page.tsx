@@ -113,9 +113,9 @@ export default function ContactPage() {
             className="space-y-4 md:space-y-6 text-center lg:text-left"
           >
             <motion.div
-              animate={{ y: [0, -15, 0], rotate: [0, 5, 0, -5, 0] }}
+              animate={{ y: [0, -10, 0], rotate: [0, 3, 0, -3, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-48 h-48 mx-auto lg:mx-0 mb-8"
+              className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto lg:mx-0 mb-8"
             >
               <Image 
                 src="/contact-avatar.png"

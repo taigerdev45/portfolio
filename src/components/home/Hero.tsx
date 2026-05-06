@@ -76,11 +76,11 @@ export default function Hero({ settings }: HeroProps) {
             initial={{ opacity: 0, scale: 0.8, rotateY: 30 }}
             animate={{ opacity: 1, scale: 1, rotateY: 0 }}
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="relative perspective-1000 hidden lg:block"
+            className="relative perspective-1000 order-first lg:order-last"
           >
             <motion.div
               animate={{ 
-                y: [0, -20, 0],
+                y: [0, -10, 0],
                 rotate: [0, 2, 0, -2, 0]
               }}
               transition={{ 
@@ -88,37 +88,37 @@ export default function Hero({ settings }: HeroProps) {
                 repeat: Infinity, 
                 ease: "easeInOut" 
               }}
-              className="relative z-10 w-full max-w-[500px] mx-auto"
+              className="relative z-10 w-full max-w-[300px] md:max-w-[400px] lg:max-w-[500px] mx-auto"
             >
               <div className="relative aspect-square w-full">
                 <Image
                   src="/3d-avatar.png"
                   alt="3D Caricature Avatar"
                   fill
-                  className="object-contain drop-shadow-[0_35px_35px_rgba(59,130,246,0.3)]"
+                  className="object-contain drop-shadow-[0_20px_50px_rgba(59,130,246,0.3)]"
                   priority
                 />
               </div>
               
               {/* Floating Icons Decorations */}
               <motion.div 
-                animate={{ y: [0, 15, 0] }} 
+                animate={{ y: [0, 10, 0] }} 
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -right-10 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700"
+                className="absolute -top-5 -right-5 md:-top-10 md:-right-10 p-2 md:p-4 bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700"
               >
-                <div className="w-8 h-8 bg-blue-500 rounded-lg" />
+                <div className="w-5 h-5 md:w-8 md:h-8 bg-blue-500 rounded-md md:rounded-lg" />
               </motion.div>
               <motion.div 
-                animate={{ y: [0, -15, 0] }} 
+                animate={{ y: [0, -10, 0] }} 
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute top-1/2 -left-12 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700"
+                className="absolute top-1/2 -left-8 md:-left-12 p-2 md:p-4 bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700"
               >
-                <div className="w-8 h-8 bg-purple-500 rounded-lg rotate-45" />
+                <div className="w-5 h-5 md:w-8 md:h-8 bg-purple-500 rounded-md md:rounded-lg rotate-45" />
               </motion.div>
             </motion.div>
             
             {/* Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5 bg-blue-500/10 rounded-full blur-[100px] -z-10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5 bg-blue-500/10 rounded-full blur-[60px] md:blur-[100px] -z-10" />
           </motion.div>
         </div>
       </div>

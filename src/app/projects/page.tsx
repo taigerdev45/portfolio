@@ -79,12 +79,12 @@ export default function ProjectsPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="hidden lg:flex justify-center"
+          className="flex justify-center order-first lg:order-last"
         >
           <motion.div
-            animate={{ y: [0, -20, 0] }}
+            animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="relative w-64 h-64 xl:w-80 xl:h-80"
+            className="relative w-48 h-48 md:w-64 md:h-64 xl:w-80 xl:h-80"
           >
             <Image
               src="/projects-avatar.png"
