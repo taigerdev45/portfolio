@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getProjects, Project, trackPageView, trackClick } from "@/lib/services";
 import { ExternalLink, Code2, Search, X, Play, Globe, Info, Rocket, Server, Monitor, Github } from "lucide-react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -60,14 +61,39 @@ export default function ProjectsPage() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-20 animate-in fade-in duration-1000">
-      <div className="text-center space-y-6 pt-12">
-        <h1 className="text-5xl md:text-8xl font-black text-slate-950 dark:text-white tracking-tight leading-tight">
-          Mes <span className="text-gradient">Réalisations</span>
-        </h1>
-        <p className="text-xl text-blue-900/60 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-bold">
-          Une sélection de projets passionnants où le design rencontre la performance.
-        </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-12 md:space-y-20 animate-in fade-in duration-1000">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-12">
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="text-center lg:text-left space-y-6"
+        >
+          <h1 className="text-5xl md:text-8xl font-black text-slate-950 dark:text-white tracking-tight leading-tight">
+            Mes <span className="text-gradient">Réalisations</span>
+          </h1>
+          <p className="text-xl text-blue-900/60 dark:text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-bold">
+            Une sélection de projets passionnants où le design rencontre la performance.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="hidden lg:flex justify-center"
+        >
+          <motion.div
+            animate={{ y: [0, -20, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="relative w-64 h-64 xl:w-80 xl:h-80"
+          >
+            <Image
+              src="/projects-avatar.png"
+              alt="Projects 3D Avatar"
+              fill
+              className="object-contain drop-shadow-2xl"
+            />
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Search Bar */}
@@ -126,6 +152,7 @@ export default function ProjectsPage() {
                 <button 
                   onClick={() => handleProjectClick(project)}
                   className="bg-white/20 backdrop-blur-md p-4 rounded-full text-white transform scale-90 group-hover:scale-100 transition-transform duration-500"
+                  aria-label="Voir les détails du projet"
                 >
                   <Search size={32} />
                 </button>
@@ -174,6 +201,7 @@ export default function ProjectsPage() {
               <button
                 onClick={() => setSelectedProject(null)}
                 className="p-3 hover:bg-white dark:hover:bg-slate-800 rounded-2xl transition-all text-blue-900/40 hover:text-blue-600 hover:rotate-90 duration-300"
+                aria-label="Fermer la modale"
               >
                 <X size={28} />
               </button>
@@ -189,6 +217,7 @@ export default function ProjectsPage() {
                       className="w-full h-full"
                       allowFullScreen
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      title={`Vidéo de démonstration pour ${selectedProject.title}`}
                     />
                   ) : (
                     <Image
@@ -218,7 +247,7 @@ export default function ProjectsPage() {
                     <div className="relative h-4 w-full bg-blue-50 dark:bg-slate-800 rounded-full overflow-hidden border border-blue-100 dark:border-slate-700">
                       <div 
                         className="absolute inset-0 bg-linear-to-r from-blue-600 to-indigo-500 transition-all duration-1000 ease-out"
-                        style={{ width: `${selectedProject.completionLevel || 0}%` }}
+                        style={{ width: `${selectedProject.completionLevel || 0}%` } as React.CSSProperties}
                       >
                         {/* Liquid Wave Effect */}
                         <div className="absolute inset-0 opacity-30">

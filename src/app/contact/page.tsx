@@ -1,7 +1,9 @@
 "use client";
 
-import { Mail, Github, Linkedin, Send, Phone } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Mail, Github, Linkedin, Send, Phone } from "lucide-react";
+import { motion } from "framer-motion";
+import Image from "next/image";
 import { getSettings, Settings } from "@/lib/services";
 
 export default function ContactPage() {
@@ -102,17 +104,33 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 animate-in fade-in duration-1000">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
         {/* Contact Info */}
         <div className="space-y-8 md:space-y-12">
-          <div className="space-y-4 md:space-y-6 text-center lg:text-left">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-4 md:space-y-6 text-center lg:text-left"
+          >
+            <motion.div
+              animate={{ y: [0, -15, 0], rotate: [0, 5, 0, -5, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="relative w-48 h-48 mx-auto lg:mx-0 mb-8"
+            >
+              <Image 
+                src="/contact-avatar.png"
+                alt="Contact 3D Avatar"
+                fill
+                className="object-contain drop-shadow-2xl"
+              />
+            </motion.div>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-950 dark:text-white tracking-tight leading-tight">
               Parlons de votre <span className="text-gradient">prochain projet</span>
             </h1>
             <p className="text-lg md:text-xl text-blue-900/60 dark:text-slate-400 leading-relaxed max-w-xl mx-auto lg:mx-0 font-bold">
               Vous avez une idée ambitieuse ou un projet innovant ? Je serais ravi d&apos;en discuter avec vous et de voir comment je peux vous aider.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
             {[
